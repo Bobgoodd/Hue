@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="3"/>
+
+    <TextView
+        android:id="@+id/ddcreatedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:textSize="10dp"
+        android:textColor="@color/colorGray" />
+
+    <TextView
+        android:id="@+id/ddmodifiedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:textSize="10dp"
+        android:textColor="@color/colorGray" />
+
+    <fragment
+        android:name="com.example.mijin.hue.ProjectTab.Tab2.DocumentDetailDefaultFragment"
+        android:id="@+id/documentFragment"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="100dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:rowCount="1"
+        android:columnCount="2"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/participatedID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_columnWeight="3"
+            android:textSize="15dp"
+            android:text="참여자ID"/>
+
+        <Button
+            android:id="@+id/rwbtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_columnWeight="1"
+            android:background="@drawable/rewrite"/>
+
+    </GridLayout>
+</LinearLayout>

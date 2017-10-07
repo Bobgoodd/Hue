@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="3"
+    android:columnCount="1"
+    android:background="@color/colorBack">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_rowWeight="2"
+        android:rowCount="1"
+        android:columnCount="3"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/h"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/u"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/e"/>
+
+
+    </GridLayout>
+
+   <GridLayout
+       android:layout_marginTop="30dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_rowWeight="2"
+       android:rowCount="2"
+       android:columnCount="3"
+       android:layout_gravity="center">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="ID"
+           android:textAlignment="center"
+           android:layout_columnWeight="1"
+           android:layout_gravity="center"/>
+
+
+       <EditText
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_columnWeight="2"
+           android:layout_gravity="center|fill_horizontal"
+           android:inputType="text"/>
+
+       <Button
+           android:id="@+id/login"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="#86DBFD"
+           android:text="Login"
+           android:layout_columnWeight="1"
+           android:layout_rowSpan="2"
+           android:layout_gravity="center"/>
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="PW"
+           android:textAlignment="center"
+           android:layout_columnWeight="1"
+           android:layout_gravity="center"/>
+
+       <EditText
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_columnWeight="2"
+           android:layout_gravity="center|fill_horizontal"
+           android:inputType="numberPassword"/>
+
+       <GridLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_columnSpan="3"
+           android:rowCount="1"
+           android:columnCount="2"
+           android:layout_gravity="top">
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="ID/PW찾기"
+               android:textAlignment="center"
+               android:textColor="@color/colorGray"
+               android:layout_columnWeight="1"
+               android:layout_gravity="top" />
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="회원가입"
+               android:textAlignment="center"
+               android:textColor="@color/colorGray"
+               android:layout_columnWeight="1"
+               android:layout_gravity="top"/>
+
+
+       </GridLayout>
+
+   </GridLayout>
+
+    <!--
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_rowWeight="1"
+        android:rowCount="1"
+        android:columnCount="3"
+        android:layout_gravity="top">
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/facebook"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:textColor="#CACDCE"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/kakaotalk"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"/>
+
+    </GridLayout>
+    -->
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_rowWeight="1"
+        android:rowCount="3"
+        android:columnCount="1"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_rowWeight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="2dp"
+                android:background="@color/colorGray"
+                android:layout_gravity="center" />
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:text="OR"
+                android:textAlignment="center"
+                android:textColor="@color/colorGray" />
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="2dp"
+                android:background="@color/colorGray"
+                android:layout_gravity="center" />
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Facebook"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FEED0C"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="KakaoTalk"
+            android:textColor="#523003"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+    </GridLayout>
+</GridLayout>
