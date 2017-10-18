@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.mijin.hue.LoginTab.Tab3.LoginTabFragment3;
 import com.example.mijin.hue.R;
 
 /**
@@ -17,6 +18,8 @@ public class LoginTabActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    LoginTabFragment3 tabF3;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +63,5 @@ public class LoginTabActivity extends AppCompatActivity {
 
             }
         });
-
-    }
-
-
+        }
 }
