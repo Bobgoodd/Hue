@@ -19,7 +19,6 @@ import com.example.mijin.hue.R;
 public class ProjectTabFragment1 extends Fragment {
     Button sound, mic;
     int soundflag, micflag;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,8 +92,6 @@ public class ProjectTabFragment1 extends Fragment {
             }
         });
 
-
         return tab1;
     }
-
 }
