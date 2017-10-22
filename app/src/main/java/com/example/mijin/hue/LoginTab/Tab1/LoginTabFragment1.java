@@ -19,16 +19,19 @@ import java.util.Date;
 public class LoginTabFragment1 extends Fragment {
 
     View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_login_tab1, container, false);
 
-        ListView listView;
-        ProjectViewAdapter adapter;
 
+        ListView listView;
+
+        ProjectViewAdapter adapter;
         adapter = new ProjectViewAdapter();
+
 
         listView = (ListView) view.findViewById(R.id.projectList);
         listView.setAdapter(adapter);

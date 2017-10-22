@@ -54,6 +54,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity"></activity>
+        <activity
+            android:name=".LoginTab.Tab3.NewFriendActivity"
+            android:theme="@style/Theme.MyDialog"></activity>
     </application>
 
 </manifest>

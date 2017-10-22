@@ -1,5 +1,6 @@
 package com.example.mijin.hue.ProjectTab.Tab1;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,22 @@ import com.example.mijin.hue.R;
 public class ProjectTabFragment1 extends Fragment {
     Button sound, mic;
     int soundflag, micflag;
+
+
+    public interface OnMyListener{
+        void onRecievedData(Object data);
+    }
+
+    private OnMyListener onMyListener;
+
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(getActivity()!=null&& getActivity() instanceof OnMyListener){
+            onMyListener = (OnMyListener) getActivity();
+        }
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +109,17 @@ public class ProjectTabFragment1 extends Fragment {
             }
         });
 
-        return tab1;
+
+        Button bb = (Button) tab1.findViewById(R.id.bb);
+
+        bb.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(onMyListener!=null) onMyListener.onRecievedData("데이터");
+            }
+        });
+
+
+            return tab1;
     }
 }

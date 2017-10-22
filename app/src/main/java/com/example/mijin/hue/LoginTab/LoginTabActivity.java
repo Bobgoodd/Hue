@@ -1,13 +1,17 @@
 package com.example.mijin.hue.LoginTab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.example.mijin.hue.R;
+
 
 /**
  * Created by mijin on 2017-10-03.
@@ -17,11 +21,13 @@ public class LoginTabActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private LoginTabPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logintab);
+
 
         // Adding Toolbar to the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
@@ -38,9 +44,10 @@ public class LoginTabActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.pager1);
 
         // Creating TabPagerAdapter adapter
-        LoginTabPagerAdapter pagerAdapter = new LoginTabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        pagerAdapter = new LoginTabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
 
         // Set TabSelectedListener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -61,7 +68,23 @@ public class LoginTabActivity extends AppCompatActivity {
             }
         });
 
-    }
 
+        Fragment f;
+        Bundle b = new Bundle();
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("newactivity",false)==true){
+
+            viewPager.setCurrentItem(2);
+            f = pagerAdapter.getItem(2);
+            b.putParcelable("new",intent.getParcelableExtra("new"));
+            if(b==null) Toast.makeText(getApplicationContext(), "데이터 없음", Toast.LENGTH_LONG).show();
+            else{
+                Toast.makeText(getApplicationContext(), "데이터 있음", Toast.LENGTH_LONG).show();
+                f.setArguments(b);
+            }
+        }
+
+
+    }
 
 }

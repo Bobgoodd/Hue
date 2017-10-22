@@ -6,14 +6,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
+import com.example.mijin.hue.ProjectTab.Tab1.ProjectTabFragment1;
 import com.example.mijin.hue.R;
 
 /**
  * Created by mijin on 2017-10-03.
  */
 
-public class ProjectTabActivity extends AppCompatActivity {
+public class ProjectTabActivity extends AppCompatActivity implements ProjectTabFragment1.OnMyListener{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -34,6 +36,7 @@ public class ProjectTabActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Tab Three"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab Four"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
 
         // Initializing ViewPager
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -65,4 +68,8 @@ public class ProjectTabActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onRecievedData(Object data) {
+        Toast.makeText(getApplicationContext(), data.toString()+"성공", Toast.LENGTH_LONG ).show();
+    }
 }

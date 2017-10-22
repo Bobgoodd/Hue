@@ -12,28 +12,40 @@ import com.example.mijin.hue.LoginTab.Tab1.LoginTabFragment1;
 import com.example.mijin.hue.LoginTab.Tab2.LoginTabFragment2;
 import com.example.mijin.hue.LoginTab.Tab3.LoginTabFragment3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LoginTabPagerAdapter extends FragmentStatePagerAdapter {
 
+    private FragmentManager fm;
     private int tabCount;
+    private List<Fragment> tabList = new ArrayList<Fragment>();
+
 
     public LoginTabPagerAdapter(FragmentManager fm, int tabCount) {
         super(fm);
+        this.fm = fm;
         this.tabCount = tabCount;
+
+        this.tabList.add(new LoginTabFragment1());
+        this.tabList.add(new LoginTabFragment2());
+        this.tabList.add(new LoginTabFragment3());
+
     }
 
     @Override
     public Fragment getItem(int position) {
+
         switch (position) {
-            case 0: LoginTabFragment1 tabFragment1 = new LoginTabFragment1();
-                return tabFragment1;
-            case 1: LoginTabFragment2 tabFragment2 = new LoginTabFragment2();
-                return tabFragment2;
-            case 2: LoginTabFragment3 tabFragment3 = new LoginTabFragment3();
-                return tabFragment3;
+            case 0: return tabList.get(0);
+            case 1: return tabList.get(1);
+            case 2: return tabList.get(2);
             default:
                 return null;
         }
+
+
 
     }
 
@@ -41,4 +53,5 @@ public class LoginTabPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return tabCount;
     }
+
 }
