@@ -9,16 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.mijin.hue.LoginTab.Tab3.FriendViewItem;
 import com.example.mijin.hue.ProjectTab.ProjectTabActivity;
 import com.example.mijin.hue.R;
+import com.melnykov.fab.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
 public class LoginTabFragment1 extends Fragment {
 
     View view;
+    ProjectViewAdapter adapter;
 
     @Nullable
     @Override
@@ -29,12 +34,27 @@ public class LoginTabFragment1 extends Fragment {
 
         ListView listView;
 
-        ProjectViewAdapter adapter;
+
         adapter = new ProjectViewAdapter();
 
+        if(getArguments()==null) Toast.makeText(getContext(), "bundle null", Toast.LENGTH_LONG).show();
+        else {
+            ArrayList<FriendViewItem> items = getArguments().getParcelableArrayList("mem");
+            String memId = "";
+            if (items != null) {
+                for (FriendViewItem item : items) {
+                    memId += item.getId() + " ";
+                }
+            }
+
+            adapter.addItem("프로젝트", new Date(), memId);
+        }
+        adapter.notifyDataSetChanged();
 
         listView = (ListView) view.findViewById(R.id.projectList);
         listView.setAdapter(adapter);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
 
         adapter.addItem("프로젝트#1", new Date(), "bobgood, dddd");
@@ -60,6 +80,22 @@ public class LoginTabFragment1 extends Fragment {
             }
         });
 
+
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddProjectActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+
+
         return view;
+    }
+
+    public ProjectViewAdapter getAdapter() {
+        return adapter;
     }
 }

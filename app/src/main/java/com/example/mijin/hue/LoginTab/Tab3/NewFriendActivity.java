@@ -1,5 +1,6 @@
 package com.example.mijin.hue.LoginTab.Tab3;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,16 +13,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.mijin.hue.LoginTab.LoginTabActivity;
 import com.example.mijin.hue.R;
+import com.example.mijin.hue.RequestHttpURLConnection;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import static android.view.View.INVISIBLE;
 
 /**
  * Created by mijin on 2017-10-22.
@@ -32,6 +31,15 @@ public class NewFriendActivity extends AppCompatActivity{
     ListView listView;
     FriendViewAdapter adapter1;
     EditText friendId;
+    String url;
+    ContentValues values = new ContentValues();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1&&resultCode==RESULT_OK)
+            finish();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,29 +48,32 @@ public class NewFriendActivity extends AppCompatActivity{
         setContentView(R.layout.activity_newfriend);
 
         friendId = (EditText) findViewById(R.id.friendId);
+        friendId.setFocusable(false);
 
         Button search;
         com.melnykov.fab.FloatingActionButton floating;
 
         floating = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.fabb);
-        floating.setVisibility(View.INVISIBLE);
+        floating.setVisibility(INVISIBLE);
+
 
         adapter1 = new FriendViewAdapter();
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         listView = (ListView) findViewById(R.id.friendList);
         listView.setAdapter(adapter1);
-        adapter1.addItem(R.drawable.man, "add", "김동수", "dd@naver.com", "010-3315-4444");
 
+        adapter1.addItem(R.drawable.man, "add", "김동수", "dd@naver.com", "010-3315-4444");
         search = (Button) findViewById(R.id.search);
 
-        /* php 코드 완성되면 활성화
+
         search.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String id = friendId.getText().toString();
+                /*String id = friendId.getText().toString();
                 FriendViewItem friendViewItem;
                 int fprofile, j;
                 String fid, fname, femail, fphone;
@@ -77,19 +88,28 @@ public class NewFriendActivity extends AppCompatActivity{
                     new HttpTask().execute(body);
 
                 }
+*/
+/*
+                url = "http://uoshue.dothome.co.kr/findId.php";
 
-            }
+                values.put("memId", friendId.getText().toString());
+
+                NetworkTask networkTask = new NetworkTask(url, values);
+                networkTask.execute();
+ */           }
         });
-        */
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 FriendViewItem item = (FriendViewItem) adapterView.getAdapter().getItem(i);
+                Toast.makeText(getApplicationContext(), item.getId().toString(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), LoginTabActivity.class);
                 //Intent intent = new Intent(view.getContext(), LoginTabFragment3.class);
-                intent.putExtra("newactivity", true);
+                //intent.putExtra("newactivity", true);
                 intent.putExtra("new", item); // 한명씩 추가
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -98,56 +118,32 @@ public class NewFriendActivity extends AppCompatActivity{
 
     }
 
+    public class NetworkTask extends AsyncTask<Void, Void, FriendViewItem[]> {
 
-    class HttpTask extends AsyncTask<String, Void, FriendViewItem[]> {
-        private String urlstr ="NewFriend.php"; // 서버주소
+        private String url;
+        private ContentValues values;
+
+        public NetworkTask(String url, ContentValues values) {
+
+            this.url = url;
+            this.values = values;
+        }
+
         @Override
-        protected FriendViewItem[] doInBackground(String... voids) {
+        protected FriendViewItem[] doInBackground(Void... params) {
 
             FriendViewItem[] friendViewItems;
             String json;
 
-            try{// php를 이용해서 데이터베이스 접근
-                String body = voids.toString();
-                URL url = new URL(urlstr);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            String result; // 요청 결과를 저장할 변수.
+            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
 
-                // POST방식으로 요청한다.( 기본값은 GET )
-                con.setRequestMethod("POST");
-                // InputStream으로 서버로 부터 응답 헤더와 메시지를 읽어들이겠다는 옵션을 정의한다.
-                con.setDoInput(true);
-                // OutputStream으로 POST 데이터를 넘겨주겠다는 옵션을 정의한다.
-                con.setDoOutput(true);
-                // 요청 헤더를 정의한다.( 원래 Content-Length값을 넘겨주어야하는데 넘겨주지 않아도 되는것이 이상하다. )
-                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                // 새로운 OutputStream에 요청할 OutputStream을 넣는다.
-                OutputStream os = con.getOutputStream();
-                // 그리고 write메소드로 메시지로 작성된 파라미터정보를 바이트단위로 "EUC-KR"로 인코딩해서 요청한다.
-                // 여기서 중요한 점은 "UTF-8"로 해도 되는데 한글일 경우는 "EUC-KR"로 인코딩해야만 한글이 제대로 전달된다.
-                os.write( body.getBytes("euc-kr") );
-                // 그리고 스트림의 버퍼를 비워준다.
-                os.flush();
-                // 스트림을 닫는다.
-                os.close();
+            json = result.toString();
 
-                // 응답받은 메시지의 길이만큼 버퍼를 생성하여 읽어들이고, "EUC-KR"로 디코딩해서 읽어들인다.
-                BufferedReader br = new BufferedReader( new InputStreamReader( con.getInputStream(), "EUC-KR" ), con.getContentLength() );
+            friendViewItems = new Gson().fromJson(json, FriendViewItem[].class);
 
-                json = br.toString();
-                // 스트림을 닫는다.
-                br.close();
-
-
-                //JSON 형식 {  {'profile' : '', 'id' : '', 'name' : '', 'email' : '', 'phone' : ''}, {}, {}}
-                friendViewItems = new Gson().fromJson(json, FriendViewItem[].class);
-
-                return friendViewItems;
-
-            }catch(Exception e){
-                e.toString();
-            }
-
-            return null;
+            return friendViewItems;
         }
 
         @Override
@@ -163,6 +159,7 @@ public class NewFriendActivity extends AppCompatActivity{
             adapter1.notifyDataSetChanged();
         }
     }
+
 }
 
 

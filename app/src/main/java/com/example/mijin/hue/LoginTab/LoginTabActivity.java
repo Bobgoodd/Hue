@@ -1,16 +1,18 @@
 package com.example.mijin.hue.LoginTab;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
+import com.example.mijin.hue.LoginTab.Tab3.FriendViewItem;
 import com.example.mijin.hue.R;
+
+import java.util.ArrayList;
 
 
 /**
@@ -68,10 +70,11 @@ public class LoginTabActivity extends AppCompatActivity {
             }
         });
 
-
+ /*
         Fragment f;
         Bundle b = new Bundle();
         Intent intent = getIntent();
+
         if(intent.getBooleanExtra("newactivity",false)==true){
 
             viewPager.setCurrentItem(2);
@@ -84,7 +87,40 @@ public class LoginTabActivity extends AppCompatActivity {
             }
         }
 
+        b.clear();
+        */
+
+
+        Intent intent = getIntent();
+
+        FriendViewItem item = intent.getParcelableExtra("new");
+        ArrayList<FriendViewItem> items = intent.getParcelableArrayListExtra("mem");
+        Bundle b = new Bundle();
+
+        if(item!=null){
+            viewPager.setCurrentItem(2);
+            b.putParcelable("new", item);
+            pagerAdapter.getItem(2).setArguments(b);
+        }
+
+        if(items!=null) {
+            viewPager.setCurrentItem(0);
+            b.putParcelableArrayList("mem",items);
+            pagerAdapter.getItem(0).setArguments(b);
+        }
+
+
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK,returnIntent);
+
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pagerAdapter.notifyDataSetChanged();
+    }
+
 
 }

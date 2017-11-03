@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,9 @@ import java.util.ArrayList;
 public class FriendViewAdapter extends BaseAdapter {
 
     private ArrayList<FriendViewItem> friendViewList = new ArrayList<FriendViewItem>();
+    int index;
+    boolean flag = false;
+    CheckBox ch = null;
     @Override
     public int getCount() {
         return friendViewList.size();
@@ -43,7 +47,10 @@ public class FriendViewAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.friendview_item, viewGroup, false);
+
         }
+
+
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         ImageView friendProfile = (ImageView) view.findViewById(R.id.friendProfile);
@@ -56,12 +63,19 @@ public class FriendViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         FriendViewItem friendViewItem = friendViewList.get(i);
 
+
         // 아이템 내 각 위젯에 데이터 반영
         friendProfile.setImageResource(friendViewItem.getProfile());
         friendId.setText(friendViewItem.getId());
         friendName.setText(friendViewItem.getName());
         friendEmail.setText(friendViewItem.getEmail());
         friendPhone.setText(friendViewItem.getPhone());
+
+        ch = view.findViewById(R.id.ch);
+
+        if(flag==true){
+            ch.setVisibility(View.VISIBLE);
+        }
 
         return view;
 
@@ -83,5 +97,15 @@ public class FriendViewAdapter extends BaseAdapter {
 
     public void clear(){
         friendViewList.clear();
+    }
+
+
+    public void setFlag(boolean flag){
+        this.flag = flag;
+        notifyDataSetChanged();
+    }
+
+    public CheckBox getCheckBox(){
+        return ch;
     }
 }

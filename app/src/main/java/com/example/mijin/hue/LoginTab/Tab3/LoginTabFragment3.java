@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.mijin.hue.R;
 
@@ -33,7 +32,12 @@ public class LoginTabFragment3 extends Fragment{
         View tab3 = inflater.inflate(R.layout.fragment_login_tab3, container, false);
 
 
+
+
+
         friendId = (EditText) tab3.findViewById(R.id.friendId);
+        friendId.setFocusable(false);
+
         friendId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -87,6 +91,7 @@ public class LoginTabFragment3 extends Fragment{
         listView = (ListView) tab3.findViewById(R.id.friendList);
         listView.setAdapter(adapter);
 
+        /*
         Bundle b = getArguments();
         if(b!=null&&b.getParcelable("new")!=null){
 
@@ -97,6 +102,9 @@ public class LoginTabFragment3 extends Fragment{
 
             b.clear();
         }
+
+*/
+
 
         adapter.addItem(R.drawable.man, "dd", "김동수", "dd@naver.com", "010-3315-4444");
         adapter.addItem(R.drawable.woman, "wdd", "김동수", "dd@naver.com", "010-3315-4444");
@@ -110,6 +118,13 @@ public class LoginTabFragment3 extends Fragment{
 
         adapter.notifyDataSetChanged();
 
+        if(getArguments()!=null) {
+            FriendViewItem item = getArguments().getParcelable("new");
+            if (item != null)
+                adapter.addItem(item.getProfile(), item.getId(), item.getName(), item.getEmail(), item.getPhone());
+
+            adapter.notifyDataSetChanged();
+        }
         search = (Button) tab3.findViewById(R.id.search);
 
         search.setOnClickListener(new View.OnClickListener(){
@@ -163,8 +178,7 @@ public class LoginTabFragment3 extends Fragment{
     }
 
 
-
-    /*
+/*
     public static Fragment newInstance(FriendViewItem item){
         f = new LoginTabFragment3();
         Bundle b = new Bundle();
