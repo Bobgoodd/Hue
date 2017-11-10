@@ -1,22 +1,29 @@
 package com.example.mijin.hue.LoginTab.Tab1;
 
-import java.util.Date;
-
 /**
  * Created by mijin on 2017-10-02.
  */
 
 public class ProjectViewItem {
 
+    private int projectid;
     private String projectName;
-    private Date createdTime;
+    private String createdTime;
     private String participatedID;
+
+    public int getProjectid() {
+        return projectid;
+    }
+
+    public void setProjectid(int projectid) {
+        this.projectid = projectid;
+    }
 
     public String getProjectName() {
         return projectName;
     }
 
-    public Date getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
@@ -28,7 +35,7 @@ public class ProjectViewItem {
         this.projectName = projectName;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
 

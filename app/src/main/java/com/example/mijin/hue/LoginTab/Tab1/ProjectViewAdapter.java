@@ -1,16 +1,19 @@
 package com.example.mijin.hue.LoginTab.Tab1;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mijin.hue.R;
+import com.example.mijin.hue.RequestHttpURLConnection;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by mijin on 2017-10-02.
@@ -19,8 +22,16 @@ import java.util.Date;
 public class ProjectViewAdapter extends BaseAdapter {
 
     private ArrayList<ProjectViewItem> projectViewList = new ArrayList<ProjectViewItem>();
+    String url;
+    ContentValues values;
+    ProjectViewItem projectViewItem;
+    NetworkTask4 networkTask4;
+    Button delete, modify;
+    View.OnClickListener mOnclickListener;
 
-    public ProjectViewAdapter() {
+
+    public ProjectViewAdapter(View.OnClickListener mOnclickListener) {
+        this.mOnclickListener = mOnclickListener;
     }
 
     @Override
@@ -47,21 +58,33 @@ public class ProjectViewAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.projectview_item, viewGroup, false);
+            delete = (Button) view.findViewById(R.id.delete);
+            modify = (Button) view.findViewById(R.id.modify);
+
+            delete.setOnClickListener(mOnclickListener);
+            delete.setTag(R.string.tag,projectViewList.get(i).getProjectid());
+            modify.setOnClickListener(mOnclickListener);
+
+
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        TextView projectName = (TextView) view.findViewById(R.id.projectName);
+        final TextView projectName = (TextView) view.findViewById(R.id.projectName);
         TextView createdTime = (TextView) view.findViewById(R.id.createdTime);
         TextView participatedID = (TextView) view.findViewById(R.id.participatedID);
 
 
+
+
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ProjectViewItem projectViewItem = projectViewList.get(i);
+        projectViewItem = projectViewList.get(i);
 
         // 아이템 내 각 위젯에 데이터 반영
         projectName.setText(projectViewItem.getProjectName());
         createdTime.setText(projectViewItem.getCreatedTime().toString());
         participatedID.setText(projectViewItem.getParticipatedID());
+
+
 
         return view;
 
@@ -69,14 +92,45 @@ public class ProjectViewAdapter extends BaseAdapter {
 
     }
 
-    public void addItem(String projectName, Date createdTime, String participatedID) {
+    public void addItem(int id, String projectName, String createdTime, String participatedID) {
         ProjectViewItem projectViewItem = new ProjectViewItem();
 
+        projectViewItem.setProjectid(id);
         projectViewItem.setProjectName(projectName);
         projectViewItem.setCreatedTime(createdTime);
         projectViewItem.setParticipatedID(participatedID);
 
         projectViewList.add(projectViewItem);
     }
+    public class NetworkTask4 extends AsyncTask<Void, Void, String> {
 
+        private String url;
+        private ContentValues values;
+
+
+        public NetworkTask4(String url, ContentValues values) {
+
+        this.url = url;
+        this.values = values;
+    }
+
+    @Override
+    protected String doInBackground(Void... params) {
+
+        String result;
+        RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+        result = requestHttpURLConnection.request(url, values);
+
+        return result;
+
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+
+        notifyDataSetChanged();
+
+    }
+}
 }

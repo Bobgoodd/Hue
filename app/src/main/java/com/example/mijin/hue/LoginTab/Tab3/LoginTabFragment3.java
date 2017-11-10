@@ -1,6 +1,8 @@
 package com.example.mijin.hue.LoginTab.Tab3;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.mijin.hue.R;
+import com.example.mijin.hue.RequestHttpURLConnection;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by mijin on 2017-10-03.
@@ -22,11 +29,11 @@ import com.example.mijin.hue.R;
 public class LoginTabFragment3 extends Fragment{
 
 
-    //static boolean flag=false;
-    //static Fragment f;
     ListView listView;
-    FriendViewAdapter adapter, adapter1;
+    FriendViewAdapter adapter;
     EditText friendId;
+    String url;
+    ContentValues values;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View tab3 = inflater.inflate(R.layout.fragment_login_tab3, container, false);
@@ -36,7 +43,7 @@ public class LoginTabFragment3 extends Fragment{
 
 
         friendId = (EditText) tab3.findViewById(R.id.friendId);
-        friendId.setFocusable(false);
+
 
         friendId.addTextChangedListener(new TextWatcher() {
             @Override
@@ -46,31 +53,7 @@ public class LoginTabFragment3 extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                FriendViewItem friendViewItem;
-                int fprofile, j;
-                String fid, fname, femail, fphone;
-
-                if (friendId.isFocusable()) {
-                    adapter1.clear();
-                    listView.setAdapter(adapter1);
-
-                    for (j = 0; j < adapter.getCount(); j++) {
-                        friendViewItem = (FriendViewItem) adapter.getItem(j);
-                        if (friendViewItem.getId().contains(friendId.getText().toString())) {
-                            fprofile = friendViewItem.getProfile();
-                            fid = friendViewItem.getId();
-                            fname = friendViewItem.getName();
-                            femail = friendViewItem.getEmail();
-                            fphone = friendViewItem.getPhone();
-
-                            adapter1.addItem(fprofile, fid, fname, femail, fphone);
-                        }
-                    }
-
-                    adapter1.notifyDataSetChanged();
-                }else{
-                    listView.setAdapter(adapter);
-                }
+                adapter.getFilter().filter(charSequence);
             }
 
             @Override
@@ -85,39 +68,20 @@ public class LoginTabFragment3 extends Fragment{
 
 
         adapter = new FriendViewAdapter();
-        adapter1 = new FriendViewAdapter();
 
 
         listView = (ListView) tab3.findViewById(R.id.friendList);
         listView.setAdapter(adapter);
 
+
+
+        url =  "http://uoshue.dothome.co.kr/loadFriend.php?";
+        values = new ContentValues();
+        values.put("usr_id","68");
+        NetworkTask2 networkTask2 = new NetworkTask2(url,values);
+        networkTask2.execute();
+
         /*
-        Bundle b = getArguments();
-        if(b!=null&&b.getParcelable("new")!=null){
-
-            FriendViewItem item = (FriendViewItem) b.getParcelable("new");
-
-            Toast.makeText(tab3.getContext(),item.getId(),Toast.LENGTH_LONG).show();
-            adapter.addItem(item.getProfile(), item.getId(), item.getName(), item.getEmail(), item.getPhone());
-
-            b.clear();
-        }
-
-*/
-
-
-        adapter.addItem(R.drawable.man, "dd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.woman, "wdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "edd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "fdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.woman, "gdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "hdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "jdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "kdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.woman, "ldd", "김동수", "dd@naver.com", "010-3315-4444");
-
-        adapter.notifyDataSetChanged();
-
         if(getArguments()!=null) {
             FriendViewItem item = getArguments().getParcelable("new");
             if (item != null)
@@ -125,40 +89,13 @@ public class LoginTabFragment3 extends Fragment{
 
             adapter.notifyDataSetChanged();
         }
+        */
         search = (Button) tab3.findViewById(R.id.search);
 
         search.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String id = friendId.getText().toString();
-                FriendViewItem friendViewItem;
-                int fprofile, j;
-                String fid, fname, femail, fphone;
-
-
-
-                if (id != null){
-                    adapter1.clear();
-                    listView.setAdapter(adapter1);
-
-                for (j = 0; j < adapter.getCount(); j++) {
-                    friendViewItem = (FriendViewItem) adapter.getItem(j);
-                    if (friendViewItem.getId().contains(id)) {
-                        fprofile = friendViewItem.getProfile();
-                        fid = friendViewItem.getId();
-                        fname = friendViewItem.getName();
-                        femail = friendViewItem.getEmail();
-                        fphone = friendViewItem.getPhone();
-
-                        adapter1.addItem(fprofile, fid, fname, femail, fphone);
-                    }
-                }
-
-                adapter1.notifyDataSetChanged();
-                }else{
-                    listView.setAdapter(adapter);
-                }
-
+               adapter.getFilter().filter((CharSequence)friendId.getText().toString());
             }
         });
 
@@ -178,16 +115,52 @@ public class LoginTabFragment3 extends Fragment{
     }
 
 
-/*
-    public static Fragment newInstance(FriendViewItem item){
-        f = new LoginTabFragment3();
-        Bundle b = new Bundle();
-        b.putParcelable("new", item);
-        f.setArguments(b);
-        flag=true;
-        return f;
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+
+        public NetworkTask2(String url, ContentValues values) {
+
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result;
+            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(url, values);
+
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            try {
+                if(result!=null) {
+                    JSONArray jarr = new JSONArray(result);
+
+                    for (int i = 0; i < jarr.length(); i++) {
+                        JSONObject json = (JSONObject) jarr.get(i);
+                        // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
+                        // 튜플로부터 데이터를 뽑아 어댑터에 추가
+                        adapter.addItem(R.drawable.man, String.valueOf(json.getInt("id")), json.getString("name"), json.getString("email"), "010-3315-4444");
+
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            adapter.notifyDataSetChanged();
+
+        }
     }
-    */
 
 
 }

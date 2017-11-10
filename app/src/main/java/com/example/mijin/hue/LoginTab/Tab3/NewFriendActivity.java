@@ -18,7 +18,10 @@ import android.widget.Toast;
 import com.example.mijin.hue.LoginTab.LoginTabActivity;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
-import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.view.View.INVISIBLE;
 
@@ -32,7 +35,9 @@ public class NewFriendActivity extends AppCompatActivity{
     FriendViewAdapter adapter1;
     EditText friendId;
     String url;
-    ContentValues values = new ContentValues();
+    ContentValues values;
+    NetworkTask networkTask;
+    String id;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -48,7 +53,7 @@ public class NewFriendActivity extends AppCompatActivity{
         setContentView(R.layout.activity_newfriend);
 
         friendId = (EditText) findViewById(R.id.friendId);
-        friendId.setFocusable(false);
+
 
         Button search;
         com.melnykov.fab.FloatingActionButton floating;
@@ -66,37 +71,21 @@ public class NewFriendActivity extends AppCompatActivity{
         listView = (ListView) findViewById(R.id.friendList);
         listView.setAdapter(adapter1);
 
-        adapter1.addItem(R.drawable.man, "add", "김동수", "dd@naver.com", "010-3315-4444");
         search = (Button) findViewById(R.id.search);
 
 
         search.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                /*String id = friendId.getText().toString();
-                FriendViewItem friendViewItem;
-                int fprofile, j;
-                String fid, fname, femail, fphone;
 
 
-
-                if (id != null){
-                    adapter1.clear();
-
-
-                    String body = "id="+id;
-                    new HttpTask().execute(body);
-
-                }
-*/
-/*
-                url = "http://uoshue.dothome.co.kr/findId.php";
-
+                url = "http://uoshue.dothome.co.kr/findId.php?";
+                values = new ContentValues();
                 values.put("memId", friendId.getText().toString());
 
-                NetworkTask networkTask = new NetworkTask(url, values);
+                networkTask = new NetworkTask(url, values);
                 networkTask.execute();
- */           }
+            }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -108,7 +97,13 @@ public class NewFriendActivity extends AppCompatActivity{
                 Intent intent = new Intent(getApplicationContext(), LoginTabActivity.class);
                 //Intent intent = new Intent(view.getContext(), LoginTabFragment3.class);
                 //intent.putExtra("newactivity", true);
-                intent.putExtra("new", item); // 한명씩 추가
+                //intent.putExtra("new", item); // 한명씩 추가
+                url = "http://uoshue.dothome.co.kr/addFriend.php?";
+                values = new ContentValues();
+                values.put("usr_id","68");
+                values.put("friend_id",id);
+                networkTask = new NetworkTask(url,values);
+                networkTask.execute();
                 startActivityForResult(intent, 1);
             }
         });
@@ -118,7 +113,7 @@ public class NewFriendActivity extends AppCompatActivity{
 
     }
 
-    public class NetworkTask extends AsyncTask<Void, Void, FriendViewItem[]> {
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         private String url;
         private ContentValues values;
@@ -130,33 +125,39 @@ public class NewFriendActivity extends AppCompatActivity{
         }
 
         @Override
-        protected FriendViewItem[] doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
 
-            FriendViewItem[] friendViewItems;
-            String json;
-
-            String result; // 요청 결과를 저장할 변수.
+            String result;
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
-            result = requestHttpURLConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(url, values);
 
-            json = result.toString();
+            return result;
 
-            friendViewItems = new Gson().fromJson(json, FriendViewItem[].class);
-
-            return friendViewItems;
         }
 
         @Override
-        protected void onPostExecute(FriendViewItem[] friendViewItems) {
-            super.onPostExecute(friendViewItems);
-            for(FriendViewItem item : friendViewItems){
-                // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
-                // 튜플로부터 데이터를 뽑아 어댑터에 추가
-                adapter1.addItem(item.getProfile(), item.getId(), item.getName(), item.getEmail(), item.getPhone());
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
+            try {
+                if(result!=null) {
+                    JSONArray jarr = new JSONArray(result);
 
+                    for (int i = 0; i < jarr.length(); i++) {
+                        JSONObject json = (JSONObject) jarr.get(i);
+                        // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
+                        // 튜플로부터 데이터를 뽑아 어댑터에 추가
+                        adapter1.addItem(R.drawable.man, String.valueOf(json.getInt("id")), json.getString("name"), json.getString("email"), "010-3315-4444");
+                        id = String.valueOf(json.getInt("id"));
+
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
             adapter1.notifyDataSetChanged();
+
         }
     }
 

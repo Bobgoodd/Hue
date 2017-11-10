@@ -1,7 +1,9 @@
 package com.example.mijin.hue.LoginTab.Tab1;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,11 @@ import com.example.mijin.hue.LoginTab.LoginTabActivity;
 import com.example.mijin.hue.LoginTab.Tab3.FriendViewAdapter;
 import com.example.mijin.hue.LoginTab.Tab3.FriendViewItem;
 import com.example.mijin.hue.R;
+import com.example.mijin.hue.RequestHttpURLConnection;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,34 +37,36 @@ import java.util.Collections;
 public class AddProjectActivity extends AppCompatActivity {
     ArrayList<FriendViewItem> mem = new ArrayList<FriendViewItem>();
     ListView listView;
-    FriendViewAdapter ad, adapter, adapter1;
+    FriendViewAdapter adapter;
     EditText friendId;
+    String url;
+    ContentValues values;
+    NetworkTask2 networkTask2;
+    CheckBox ch;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_login_tab3);
 
+
+
         adapter = new FriendViewAdapter();
-        adapter1 = new FriendViewAdapter();
+
 
 
         listView = (ListView) findViewById(R.id.friendList);
         listView.setAdapter(adapter);
-        ad = adapter;
+
+
         adapter.setFlag(true);
 
 
-        adapter.addItem(R.drawable.man, "dd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.woman, "wdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "edd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "fdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.woman, "gdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "hdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "jdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.man, "kdd", "김동수", "dd@naver.com", "010-3315-4444");
-        adapter.addItem(R.drawable.woman, "ldd", "김동수", "dd@naver.com", "010-3315-4444");
-
-        adapter.notifyDataSetChanged();
+        url =  "http://uoshue.dothome.co.kr/loadFriend.php?";
+        values = new ContentValues();
+        values.put("usr_id","11");
+        networkTask2 = new NetworkTask2(url,values);
+        networkTask2.execute();
 
 
         Button search = (Button) findViewById(R.id.search);
@@ -78,6 +87,16 @@ public class AddProjectActivity extends AppCompatActivity {
                     builder.show();
 
                 }else {
+                    url =  "http://uoshue.dothome.co.kr/addProject.php?";
+                    values = new ContentValues();
+                    values.put("director_id","11");
+                    values.put("name","프로젝트");
+                    for(int k=0;k<mem.size();k++) {
+                        values.put("usr_id" + k, mem.get(k).getId());
+                    }
+                    values.put("k",mem.size());
+                    networkTask2 = new NetworkTask2(url, values);
+                    networkTask2.execute();
                     Intent intent = new Intent(getApplicationContext(), LoginTabActivity.class);
                     intent.putParcelableArrayListExtra("mem", mem);
                     startActivityForResult(intent, 0);
@@ -90,7 +109,6 @@ public class AddProjectActivity extends AppCompatActivity {
 
 
         friendId = (EditText) findViewById(R.id.friendId);
-        friendId.setFocusable(false);
 
         friendId.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,33 +118,9 @@ public class AddProjectActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                FriendViewItem friendViewItem;
-                int fprofile, j;
-                String fid, fname, femail, fphone;
 
-                if (friendId.isFocusable()) {
-                    adapter1.clear();
-                    listView.setAdapter(adapter1);
+                adapter.getFilter().filter(charSequence);
 
-                    for (j = 0; j < adapter.getCount(); j++) {
-                        friendViewItem = (FriendViewItem) adapter.getItem(j);
-                        if (friendViewItem.getId().contains(friendId.getText().toString())) {
-                            fprofile = friendViewItem.getProfile();
-                            fid = friendViewItem.getId();
-                            fname = friendViewItem.getName();
-                            femail = friendViewItem.getEmail();
-                            fphone = friendViewItem.getPhone();
-
-                            adapter1.addItem(fprofile, fid, fname, femail, fphone);
-                            ad = adapter1;
-                        }
-                    }
-
-                    adapter1.notifyDataSetChanged();
-                }else{
-                    listView.setAdapter(adapter);
-                    ad = adapter;
-                }
             }
 
             @Override
@@ -138,10 +132,9 @@ public class AddProjectActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new ListView.OnItemClickListener(){
 
-            CheckBox ch;
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                 ch = (CheckBox) view.findViewById(R.id.ch);
+                ch = (CheckBox) view.findViewById(R.id.ch);
 
                 if(mem.contains((FriendViewItem)adapterView.getAdapter().getItem(i))) {
                     mem.remove((FriendViewItem) adapterView.getAdapter().getItem(i));
@@ -153,28 +146,9 @@ public class AddProjectActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), ((FriendViewItem) adapterView.getAdapter().getItem(i)).getId()+" add", Toast.LENGTH_LONG).show();
                     ch.setChecked(true);
                 }
-
             }
         });
-        /*
-        listView.setOnItemSelectedListener(new ListView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(mem.contains((FriendViewItem)adapterView.getAdapter().getItem(i))) {
-                    mem.remove((FriendViewItem) adapterView.getAdapter().getItem(i));
-                    Toast.makeText(getApplicationContext(), ((FriendViewItem) adapterView.getAdapter().getItem(i)).getId()+" remove", Toast.LENGTH_LONG).show();
-                }else{
-                    mem.add((FriendViewItem)adapterView.getAdapter().getItem(i));
-                    Toast.makeText(getApplicationContext(), ((FriendViewItem) adapterView.getAdapter().getItem(i)).getId()+" add", Toast.LENGTH_LONG).show();
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-*/
     }
 
     @Override
@@ -183,16 +157,51 @@ public class AddProjectActivity extends AppCompatActivity {
         if(requestCode==0&&requestCode==RESULT_OK)
             finish();
     }
-/*
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SparseBooleanArray bool = listView.getCheckedItemPositions();
-        if(bool!=null) {
-            for (int i = 0; i < bool.size(); i++) {
-                if (bool.get(i)) mem.add((FriendViewItem) adapter.getItem(i));
-            }
-        }
+
+public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+    private String url;
+    private ContentValues values;
+
+    public NetworkTask2(String url, ContentValues values) {
+
+        this.url = url;
+        this.values = values;
     }
-    */
+
+    @Override
+    protected String doInBackground(Void... params) {
+
+        String result;
+        RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+        result = requestHttpURLConnection.request(url, values);
+
+        return result;
+
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+
+        try {
+            if(result!=null) {
+                JSONArray jarr = new JSONArray(result);
+
+                for (int i = 0; i < jarr.length(); i++) {
+                    JSONObject json = (JSONObject) jarr.get(i);
+                    // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
+                    // 튜플로부터 데이터를 뽑아 어댑터에 추가
+                    adapter.addItem(R.drawable.man, String.valueOf(json.getInt("id")), json.getString("name"), json.getString("email"), "010-3315-4444");
+
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        adapter.notifyDataSetChanged();
+
+    }
+}
 }

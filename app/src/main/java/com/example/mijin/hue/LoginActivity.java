@@ -72,22 +72,25 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String ID = idText.getText().toString();
                 String password = passwordText.getText().toString();
+                Toast.makeText(getApplicationContext(), ID+"/"+password, Toast.LENGTH_LONG).show();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if(success) {
-                                String ID = jsonResponse.getString("ID");
-                                String password = jsonResponse.getString("password");
+                            //boolean success = jsonResponse.getBoolean("success");
+                            boolean success = false;
+                            Toast.makeText(getApplicationContext(), "success"+success, Toast.LENGTH_LONG).show();
+                            if(!success) {
+                                //String ID = jsonResponse.getString("ID");
+                                //String password = jsonResponse.getString("password");
+                                //Toast.makeText(getApplicationContext(), ID+password+"??", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this, LoginTabActivity.class);
 
                                 //id, password를 logintab으로 넘겨줌
-                                intent.putExtra("ID", ID);
-                                intent.putExtra("password", password);
+                                //intent.putExtra("ID", ID);
+                                //intent.putExtra("password", password);
                                 LoginActivity.this.startActivity(intent);
                             }
                             else {

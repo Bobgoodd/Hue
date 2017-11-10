@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,20 +19,59 @@ import java.util.ArrayList;
  * Created by mijin on 2017-10-22.
  */
 
-public class FriendViewAdapter extends BaseAdapter {
+public class FriendViewAdapter extends BaseAdapter implements Filterable {
 
     private ArrayList<FriendViewItem> friendViewList = new ArrayList<FriendViewItem>();
+    private ArrayList<FriendViewItem> filteredViewList =friendViewList;
     int index;
     boolean flag = false;
     CheckBox ch = null;
+    Filter filter;
+
+    @Override
+    public Filter getFilter() {
+        if(filter == null) {
+            filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults results = new FilterResults();
+                    ArrayList<FriendViewItem> values = new ArrayList<FriendViewItem>();
+
+                    if(constraint == null || constraint.length() == 0){
+                        results.values = friendViewList;
+                        results.count = friendViewList.size();
+                    }else{
+                        for(FriendViewItem rest : friendViewList){
+                            if(rest.getId().contains(constraint))
+                                values.add(rest);
+                        }
+
+                        results.values = values;
+                        results.count = values.size();
+                    }
+
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    filteredViewList = (ArrayList<FriendViewItem>) results.values;
+                    notifyDataSetChanged();
+                }
+            };
+        }
+
+        return filter;
+    }
+
     @Override
     public int getCount() {
-        return friendViewList.size();
+        return filteredViewList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return friendViewList.get(i);
+        return filteredViewList.get(i);
     }
 
     @Override
@@ -61,7 +102,7 @@ public class FriendViewAdapter extends BaseAdapter {
 
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        FriendViewItem friendViewItem = friendViewList.get(i);
+        FriendViewItem friendViewItem = filteredViewList.get(i);
 
 
         // 아이템 내 각 위젯에 데이터 반영
@@ -105,7 +146,6 @@ public class FriendViewAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public CheckBox getCheckBox(){
-        return ch;
-    }
+
+
 }

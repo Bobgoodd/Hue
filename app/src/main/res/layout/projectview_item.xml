@@ -7,6 +7,7 @@
     android:columnCount="2"
     android:descendantFocusability="blocksDescendants">
 
+
     <TextView
         android:id="@+id/projectName"
         android:layout_width="wrap_content"
@@ -19,11 +20,13 @@
         android:textStyle="bold" />
 
     <Button
+        android:id="@+id/delete"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_rowSpan="2"
         android:layout_gravity="center"
         android:layout_marginRight="15dp"
+        android:focusable="false"
         android:background="@drawable/delete"/>
 
     <TextView
@@ -37,11 +40,13 @@
         android:textColor="@color/colorGray" />
 
     <Button
+        android:id="@+id/modify"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_rowSpan="2"
         android:layout_gravity="center"
         android:layout_marginRight="15dp"
+        android:focusable="false"
         android:background="@drawable/modify"/>
 
     <TextView
