@@ -2,6 +2,7 @@ package com.example.mijin.hue.LoginTab.Tab1;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class LoginTabFragment1 extends Fragment {
 
@@ -32,6 +35,9 @@ public class LoginTabFragment1 extends Fragment {
     ContentValues values;
     NetworkTask3 networkTask3;
     ListView listView;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+    String id;
 
     @Nullable
     @Override
@@ -40,14 +46,15 @@ public class LoginTabFragment1 extends Fragment {
         view = inflater.inflate(R.layout.fragment_login_tab1, container, false);
 
 
-
-
+        prefs=getActivity().getSharedPreferences("PrefName",MODE_PRIVATE);
+        editor = prefs.edit();
 
         adapter = new ProjectViewAdapter(OnclickListener);
 
 
         if(getArguments()==null) Toast.makeText(getContext(), "bundle null", Toast.LENGTH_LONG).show();
-        else {/*
+        else {
+            /*
             ArrayList<FriendViewItem> items = getArguments().getParcelableArrayList("mem");
             String memId = "";
             if (items != null) {
@@ -63,7 +70,13 @@ public class LoginTabFragment1 extends Fragment {
 
         url =  "http://uoshue.dothome.co.kr/loadProject.php?";
         values = new ContentValues();
-        values.put("director_id","11");
+
+        if(prefs!=null){
+            id = prefs.getString("id", null);
+            Log.d("로그인정보",id);
+        }
+
+        values.put("director_id",id);
         networkTask3 = new NetworkTask3(url, values);
         networkTask3.execute();
         adapter.notifyDataSetChanged();
@@ -77,7 +90,13 @@ public class LoginTabFragment1 extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //String project_id = String.valueOf(((ProjectViewItem)adapterView.getAdapter().getItem(i)).getProjectid());
+
+                editor.putString("project_id",String.valueOf(((ProjectViewItem)adapterView.getAdapter().getItem(i)).getProjectid()));
+                editor.commit();
+                Log.d("들어가라",prefs.getString("project_id",null));
                 Intent intent = new Intent(view.getContext(), ProjectTabActivity.class);
+                //intent.putExtra("project_id", project_id);
                 startActivity(intent);
             }
         });
@@ -183,6 +202,7 @@ public class LoginTabFragment1 extends Fragment {
                 case R.id.delete:
                     url = "http://uoshue.dothome.co.kr/deleteProject.php?";
                     values = new ContentValues();
+                    values.put("usr_id","11");
                     values.put("project_id", String.valueOf(v.getTag(R.string.tag)));
                     networkTask3 = new NetworkTask3(url, values);
                     networkTask3.execute();
@@ -193,6 +213,13 @@ public class LoginTabFragment1 extends Fragment {
 
 
                 case R.id.modify:
+                    url = "http://uoshue.dothome.co.kr/modify.php?";
+                    values = new ContentValues();
+                    values.put("project_id", String.valueOf(v.getTag(R.string.tag)));
+                    networkTask3 = new NetworkTask3(url, values);
+                    networkTask3.execute();
+
+                    adapter.notifyDataSetChanged();
 
 
                     break;

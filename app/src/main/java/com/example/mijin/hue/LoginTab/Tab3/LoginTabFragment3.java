@@ -2,6 +2,7 @@ package com.example.mijin.hue.LoginTab.Tab3;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,8 @@ import com.example.mijin.hue.RequestHttpURLConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by mijin on 2017-10-03.
@@ -70,14 +73,16 @@ public class LoginTabFragment3 extends Fragment{
         adapter = new FriendViewAdapter();
 
 
+
         listView = (ListView) tab3.findViewById(R.id.friendList);
         listView.setAdapter(adapter);
 
-
+        adapter.notifyDataSetChanged();
 
         url =  "http://uoshue.dothome.co.kr/loadFriend.php?";
         values = new ContentValues();
-        values.put("usr_id","68");
+        SharedPreferences prefs = getActivity().getSharedPreferences("PrefName",MODE_PRIVATE);
+        values.put("usr_id",prefs.getString("id",null));
         NetworkTask2 networkTask2 = new NetworkTask2(url,values);
         networkTask2.execute();
 
@@ -149,7 +154,7 @@ public class LoginTabFragment3 extends Fragment{
                         JSONObject json = (JSONObject) jarr.get(i);
                         // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
                         // 튜플로부터 데이터를 뽑아 어댑터에 추가
-                        adapter.addItem(R.drawable.man, String.valueOf(json.getInt("id")), json.getString("name"), json.getString("email"), "010-3315-4444");
+                        adapter.addItem(R.drawable.man, json.getString("id"), json.getString("name"), json.getString("email"), "010-3315-4444");
 
                     }
                 }

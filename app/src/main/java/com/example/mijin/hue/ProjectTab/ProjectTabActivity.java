@@ -25,16 +25,18 @@ public class ProjectTabActivity extends AppCompatActivity implements ProjectTabF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projecttab);
 
+
+
         // Adding Toolbar to the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Initializing the TabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab One"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab Two"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab Three"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab Four"));
+        tabLayout.addTab(tabLayout.newTab().setText("회의방"));
+        tabLayout.addTab(tabLayout.newTab().setText("문서"));
+        tabLayout.addTab(tabLayout.newTab().setText("업무"));
+        tabLayout.addTab(tabLayout.newTab().setText("프로젝트 일정"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
@@ -46,6 +48,20 @@ public class ProjectTabActivity extends AppCompatActivity implements ProjectTabF
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        /*
+        Fragment f;
+        Bundle b = new Bundle();
+        Intent intent = getIntent();
+
+
+        f = pagerAdapter.getItem(0);
+        b.putString("project_id",intent.getStringExtra("project_id"));
+        if(b==null) Toast.makeText(getApplicationContext(), "데이터 없음", Toast.LENGTH_LONG).show();
+        else{
+            Toast.makeText(getApplicationContext(), "데이터 있음", Toast.LENGTH_LONG).show();
+            f.setArguments(b);
+        }
+        */
         // Set TabSelectedListener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.mijin.hue.R;
 
-import java.util.Date;
 import java.util.ArrayList;
 
 
@@ -54,14 +53,14 @@ public class DocumentViewAdapter extends BaseAdapter{
         DocumentViewItem documentViewItem = documentViewList.get(i);
 
         documentName.setText(documentViewItem.getDocumentName());
-        createdTime.setText(documentViewItem.getCreatedTime().toString());
-        modifiedTime.setText(documentViewItem.getModifiedTime().toString());
+        createdTime.setText(documentViewItem.getCreatedTime());
+        modifiedTime.setText(documentViewItem.getModifiedTime());
         participationId.setText(documentViewItem.getParticipationId());
 
         return view;
     }
 
-    public void addItem(String documentName, Date createdTime, Date modifiedTime, String participationId){
+    public void addItem(String documentName, String createdTime, String modifiedTime, String participationId){
         DocumentViewItem documentViewItem = new DocumentViewItem();
 
         documentViewItem.setDocumentName(documentName);

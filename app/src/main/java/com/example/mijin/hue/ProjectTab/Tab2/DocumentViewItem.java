@@ -1,24 +1,22 @@
 package com.example.mijin.hue.ProjectTab.Tab2;
 
-import java.util.Date;
-
 /**
  * Created by mijin on 2017-10-03.
  */
 
 public class DocumentViewItem {
     private String documentName;
-    private Date createdTime;
+    private String createdTime;
 
-    public Date getModifiedTime() {
+    public String getModifiedTime() {
         return modifiedTime;
     }
 
-    public void setModifiedTime(Date modifiedTime) {
+    public void setModifiedTime(String modifiedTime) {
         this.modifiedTime = modifiedTime;
     }
 
-    private Date modifiedTime;
+    private String modifiedTime;
     private String participationId;
 
     public String getDocumentName() {
@@ -29,11 +27,11 @@ public class DocumentViewItem {
         this.documentName = documentName;
     }
 
-    public Date getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
 

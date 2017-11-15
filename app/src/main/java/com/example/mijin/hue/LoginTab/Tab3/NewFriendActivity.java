@@ -2,6 +2,7 @@ package com.example.mijin.hue.LoginTab.Tab3;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -38,6 +39,7 @@ public class NewFriendActivity extends AppCompatActivity{
     ContentValues values;
     NetworkTask networkTask;
     String id;
+    SharedPreferences prefs;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -60,7 +62,7 @@ public class NewFriendActivity extends AppCompatActivity{
 
         floating = (com.melnykov.fab.FloatingActionButton) findViewById(R.id.fabb);
         floating.setVisibility(INVISIBLE);
-
+        prefs = getSharedPreferences("PrefName",MODE_PRIVATE);
 
         adapter1 = new FriendViewAdapter();
 
@@ -78,9 +80,10 @@ public class NewFriendActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-
+                adapter1.clear();
                 url = "http://uoshue.dothome.co.kr/findId.php?";
                 values = new ContentValues();
+                values.put("usr_id",prefs.getString("id",null));
                 values.put("memId", friendId.getText().toString());
 
                 networkTask = new NetworkTask(url, values);
@@ -97,10 +100,11 @@ public class NewFriendActivity extends AppCompatActivity{
                 Intent intent = new Intent(getApplicationContext(), LoginTabActivity.class);
                 //Intent intent = new Intent(view.getContext(), LoginTabFragment3.class);
                 //intent.putExtra("newactivity", true);
-                //intent.putExtra("new", item); // 한명씩 추가
+                intent.putExtra("new", item); // 한명씩 추가
                 url = "http://uoshue.dothome.co.kr/addFriend.php?";
                 values = new ContentValues();
-                values.put("usr_id","68");
+
+                values.put("usr_id",prefs.getString("id",null));
                 values.put("friend_id",id);
                 networkTask = new NetworkTask(url,values);
                 networkTask.execute();
@@ -147,8 +151,8 @@ public class NewFriendActivity extends AppCompatActivity{
                         JSONObject json = (JSONObject) jarr.get(i);
                         // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
                         // 튜플로부터 데이터를 뽑아 어댑터에 추가
-                        adapter1.addItem(R.drawable.man, String.valueOf(json.getInt("id")), json.getString("name"), json.getString("email"), "010-3315-4444");
-                        id = String.valueOf(json.getInt("id"));
+                        adapter1.addItem(R.drawable.man, json.getString("id"), json.getString("name"), json.getString("email"), "010-3315-4444");
+                        id = json.getString("id");
 
                     }
                 }

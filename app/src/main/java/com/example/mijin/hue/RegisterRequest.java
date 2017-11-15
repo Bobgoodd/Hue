@@ -7,24 +7,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 다은 on 2017-10-18.
+ * Created by Network-LAB-taeu on 2017-11-13.
  */
 
 public class RegisterRequest extends StringRequest {
-    final private static String URL="http://uoshue.dothome.co.kr/Register.php";
+    final static private String url = "http://uoshue.dothome.co.kr/registerH.php";
     private Map<String, String> parameters;
 
-    public RegisterRequest(String ID, String password, String email, String name, Response.Listener<String> listener) {
-        super(Method.POST, URL, listener, null);
+    public RegisterRequest(String userId, String userEmail, String userName, String userPassword, Response.Listener<String> listener){
+        super(Method.POST, url, listener, null);
         parameters = new HashMap<>();
-        parameters.put("ID", ID);
-        parameters.put("password", password);
-        parameters.put("email", email);
-        parameters.put("name", name);
+        parameters.put("userId", userId);
+        parameters.put("userEmail", userEmail);
+        parameters.put("userName", userName);
+        parameters.put("userPassword", userPassword);
     }
 
-    @Override
-    public Map<String, String> getParams() {
+    public Map<String, String> getParams(){
         return parameters;
     }
 }
+

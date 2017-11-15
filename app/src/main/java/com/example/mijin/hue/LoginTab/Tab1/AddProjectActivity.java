@@ -3,6 +3,7 @@ package com.example.mijin.hue.LoginTab.Tab1;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -43,6 +44,7 @@ public class AddProjectActivity extends AppCompatActivity {
     ContentValues values;
     NetworkTask2 networkTask2;
     CheckBox ch;
+    SharedPreferences prefs;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class AddProjectActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_login_tab3);
 
 
-
+        prefs = getSharedPreferences("PrefName",MODE_PRIVATE);
         adapter = new FriendViewAdapter();
 
 
@@ -64,7 +66,7 @@ public class AddProjectActivity extends AppCompatActivity {
 
         url =  "http://uoshue.dothome.co.kr/loadFriend.php?";
         values = new ContentValues();
-        values.put("usr_id","11");
+        values.put("usr_id",prefs.getString("id",null));
         networkTask2 = new NetworkTask2(url,values);
         networkTask2.execute();
 
@@ -89,7 +91,8 @@ public class AddProjectActivity extends AppCompatActivity {
                 }else {
                     url =  "http://uoshue.dothome.co.kr/addProject.php?";
                     values = new ContentValues();
-                    values.put("director_id","11");
+
+                    values.put("director_id",prefs.getString("id",null));
                     values.put("name","프로젝트");
                     for(int k=0;k<mem.size();k++) {
                         values.put("usr_id" + k, mem.get(k).getId());
@@ -192,7 +195,7 @@ public class NetworkTask2 extends AsyncTask<Void, Void, String> {
                     JSONObject json = (JSONObject) jarr.get(i);
                     // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
                     // 튜플로부터 데이터를 뽑아 어댑터에 추가
-                    adapter.addItem(R.drawable.man, String.valueOf(json.getInt("id")), json.getString("name"), json.getString("email"), "010-3315-4444");
+                    adapter.addItem(R.drawable.man, json.getString("id"), json.getString("name"), json.getString("email"), "010-3315-4444");
 
                 }
             }
