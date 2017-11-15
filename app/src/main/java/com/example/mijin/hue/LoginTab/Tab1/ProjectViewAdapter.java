@@ -61,9 +61,12 @@ public class ProjectViewAdapter extends BaseAdapter {
             delete = (Button) view.findViewById(R.id.delete);
             modify = (Button) view.findViewById(R.id.modify);
 
+
             delete.setOnClickListener(mOnclickListener);
-            delete.setTag(R.string.tag,projectViewList.get(i).getProjectid());
             modify.setOnClickListener(mOnclickListener);
+            delete.setTag(R.string.tag,projectViewList.get(i).getProjectid());
+            modify.setTag(R.string.tag1,projectViewList.get(i).getProjectid());
+
 
 
         }

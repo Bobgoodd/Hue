@@ -64,7 +64,9 @@
             android:name=".LoginTab.Tab3.NewFriendActivity"
             android:theme="@style/Theme.MyDialog"></activity>
         <activity android:name=".LoginTab.Tab1.AddProjectActivity"/>
-
+        <activity
+            android:name=".LoginTab.Tab1.ModifyProjectActivity"
+            android:theme="@style/Theme.MyDialog"></activity>
 
 
     </application>

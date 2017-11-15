@@ -1,19 +1,20 @@
 package com.example.mijin.hue.LoginTab.Tab1;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.mijin.hue.ProjectTab.ProjectTabActivity;
 import com.example.mijin.hue.R;
@@ -37,7 +38,8 @@ public class LoginTabFragment1 extends Fragment {
     ListView listView;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    String id;
+    String id, project_id;
+
 
     @Nullable
     @Override
@@ -51,10 +53,10 @@ public class LoginTabFragment1 extends Fragment {
 
         adapter = new ProjectViewAdapter(OnclickListener);
 
-
+/*
         if(getArguments()==null) Toast.makeText(getContext(), "bundle null", Toast.LENGTH_LONG).show();
         else {
-            /*
+
             ArrayList<FriendViewItem> items = getArguments().getParcelableArrayList("mem");
             String memId = "";
             if (items != null) {
@@ -64,10 +66,23 @@ public class LoginTabFragment1 extends Fragment {
             }
 
             adapter.addItem("프로젝트", new Date(), memId);
-            */
+
+            ArrayList<FriendViewItem> items = getArguments().getParcelableArrayList("mem");
+            String index = getArguments().getString("project_id");
+
+            if(items!=null){
+                if(index!=null) {
+                    String orimemlist = ((ProjectViewItem) adapter.getItem(Integer.parseInt("index"))).getParticipatedID();
+                    for (FriendViewItem item : items) {
+                        orimemlist += ", " + item.getId();
+                    }
+                    ((ProjectViewItem) adapter.getItem(Integer.parseInt("index"))).setParticipatedID(orimemlist);
+                    adapter.notifyDataSetChanged();
+                }
+            }
 
         }
-
+*/
         url =  "http://uoshue.dothome.co.kr/loadProject.php?";
         values = new ContentValues();
 
@@ -147,38 +162,39 @@ public class LoginTabFragment1 extends Fragment {
             super.onPostExecute(result);
 
             try {
-                if(result!=null) {
-                    JSONArray jarr = new JSONArray(result);
+                if(result!=null&&!result.equals("")) {
 
+                    JSONArray jarr = new JSONArray(result);
+                    String memlist = "";
                     for (int i = 0; i < jarr.length(); i++) {
                         JSONObject json = (JSONObject) jarr.get(i);
                         // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
                         // 튜플로부터 데이터를 뽑아 어댑터에 추가
 
-                        String memlist="";
-                        /*
-                        boolean flag=false;
-                        JSONArray jarr2 = (JSONArray) ((JSONObject) jarr.get(i)).getJSONArray("memlist");
-                        for(int j=0;j<jarr2.length();j++){
-                            JSONObject json2 = (JSONObject) jarr2.get(i);
-                            if(flag) memlist += ",";
-                            else memlist += json2.getString("");
-                            flag=true;
-                        }
-                        */
+
+                    /*
+                    boolean flag=false;
+                    JSONArray jarr2 = (JSONArray) ((JSONObject) jarr.get(i)).getJSONArray("memlist");
+                    for(int j=0;j<jarr2.length();j++){
+                        JSONObject json2 = (JSONObject) jarr2.get(i);
+                        if(flag) memlist += ",";
+                        else memlist += json2.getString("");
+                        flag=true;
+                    }
+                    */
 
                         memlist = json.get("memlist").toString().trim();
 
                         String[] spl = memlist.split("[\"\\[\\]]+");
                         memlist = "";
-                        for(String str : spl){
-                            memlist += str+" ";
+                        for (String str : spl) {
+                            memlist += str + " ";
                         }
                         adapter.addItem(json.getInt("id"), json.getString("name"), json.getString("created"), memlist);
                     }
-
-
                 }
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -200,19 +216,38 @@ public class LoginTabFragment1 extends Fragment {
             switch (v.getId()) {
 
                 case R.id.delete:
-                    url = "http://uoshue.dothome.co.kr/deleteProject.php?";
-                    values = new ContentValues();
-                    values.put("usr_id","11");
-                    values.put("project_id", String.valueOf(v.getTag(R.string.tag)));
-                    networkTask3 = new NetworkTask3(url, values);
-                    networkTask3.execute();
+                    project_id=String.valueOf(v.getTag(R.string.tag));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("삭제 하시겠습니까?");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            url = "http://uoshue.dothome.co.kr/deleteProject.php?";
+                            values = new ContentValues();
+                            values.put("usr_id",prefs.getString("id",null));
+                            values.put("project_id", project_id);
+                            networkTask3 = new NetworkTask3(url, values);
+                            networkTask3.execute();
+                            adapter.notifyDataSetChanged();
 
-                    adapter.notifyDataSetChanged();
+                        }
+                    });
+                    builder.setNegativeButton("취소",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.show();
+
+
+
 
                     break;
 
 
                 case R.id.modify:
+                    /*
                     url = "http://uoshue.dothome.co.kr/modify.php?";
                     values = new ContentValues();
                     values.put("project_id", String.valueOf(v.getTag(R.string.tag)));
@@ -220,7 +255,11 @@ public class LoginTabFragment1 extends Fragment {
                     networkTask3.execute();
 
                     adapter.notifyDataSetChanged();
-
+*/
+                    project_id=String.valueOf(v.getTag(R.string.tag1));
+                    Intent intent2 = new Intent(getContext(), ModifyProjectActivity.class);
+                    intent2.putExtra("project_id",project_id);
+                    startActivity(intent2);
 
                     break;
 
