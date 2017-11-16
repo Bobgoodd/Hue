@@ -5,8 +5,17 @@ package com.example.mijin.hue.ProjectTab.Tab2;
  */
 
 public class DocumentViewItem {
+    private int documentId;
     private String documentName;
     private String createdTime;
+
+    public int getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(int documentId) {
+        this.documentId = documentId;
+    }
 
     public String getModifiedTime() {
         return modifiedTime;

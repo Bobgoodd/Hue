@@ -11,6 +11,7 @@
         android:layout_weight="3">
 
         <EditText
+            android:id="@+id/content2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="10"
@@ -18,6 +19,16 @@
 
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/rwbtn1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end|right"
+        android:layout_columnWeight="1"
+        android:text="저장"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorLogo"/>
 
 
 </LinearLayout>
