@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
     String ID, password, email, name, confirm;
+    int idCheck=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,56 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        idText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                idCheck=0;
+            }
+        });
+
+        duplicationCheckButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ID = idText.getText().toString();
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("check");
+
+                            if(success) {
+                                Toast.makeText(RegisterActivity.this,"ID 사용 가능",Toast.LENGTH_SHORT).show();
+                                passwordText.requestFocus();
+                                idCheck=1;
+                            }
+                            else {
+                                Toast.makeText(RegisterActivity.this, "다른 ID를 입력하세요", Toast.LENGTH_SHORT).show();
+                                idText.requestFocus();
+                            }
+                        }
+                        catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                IdCheckRequest idCheckRequest = new IdCheckRequest(ID, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                queue.add(idCheckRequest);
+            }
+        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,13 +162,18 @@ public class RegisterActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("회원가입 완료").
-                                        setPositiveButton("확인", null).
-                                        create().show();
+                                if(idCheck==1) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                    builder.setMessage("회원가입 완료").
+                                            setPositiveButton("확인", null).
+                                            create().show();
 
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                RegisterActivity.this.startActivity(intent);
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    RegisterActivity.this.startActivity(intent);
+                                }
+                                else {
+                                    Toast.makeText(RegisterActivity.this, "ID 중복을 검사하세요", Toast.LENGTH_SHORT).show();
+                                }
                             }
                             else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);

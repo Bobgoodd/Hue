@@ -1,9 +1,7 @@
 package com.example.mijin.hue;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -11,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.mijin.hue.LoginTab.LoginTabActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -18,6 +19,8 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
 
 public class LoginActivity extends Activity {
 
@@ -47,7 +50,7 @@ public class LoginActivity extends Activity {
         } );
         login = (Button) findViewById(R.id.login);
 
-        login.setOnClickListener(new Button.OnClickListener(){
+ /*       login.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
                 if(idText.getText().toString()==null||passwordText.getText().toString()==null){
@@ -69,7 +72,7 @@ public class LoginActivity extends Activity {
 
                     Intent intent = new Intent(LoginActivity.this, LoginTabActivity.class);
                     startActivity(intent);
-                }
+                }*/
 //                final String userId = idText.getText().toString();
 //                final String userPassword = passwordText.getText().toString();
 //                Response.Listener<String> responseListener = new Response.Listener<String>(){
@@ -104,48 +107,48 @@ public class LoginActivity extends Activity {
 //                queue.add(loginRequest);
 
 
+   /*         }
+        });*/
+
+        login.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                final String userId = idText.getText().toString();
+                final String userPassword = passwordText.getText().toString();
+
+                Response.Listener<String> responseListener = new Response.Listener<String>(){
+
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if(success){
+                                String userId = jsonResponse.getString("userId");
+                                String userPassword = jsonResponse.getString("userPassword");
+                                Intent intent = new Intent(LoginActivity.this, LoginTabActivity.class);
+                                intent.putExtra("userId", userId);
+                                intent.putExtra("userPassword", userPassword);
+                                startActivity(intent);
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setMessage("로그인에 실패했습니다.").
+                                        setNegativeButton("다시 시도", null)
+                                        .create()
+                                        .show();
+                            }
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                LoginRequest loginRequest = new LoginRequest(userId, userPassword, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                queue.add(loginRequest);
             }
         });
-
-//        login.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View view) {
-//                final String userId = idText.getText().toString();
-//                final String userPassword = passwordText.getText().toString();
-//
-//                Response.Listener<String> responseListener = new Response.Listener<String>(){
-//
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try{
-//                            JSONObject jsonResponse = new JSONObject(response);
-//                            boolean success = jsonResponse.getBoolean("success");
-//                            if(success){
-//                                String userId = jsonResponse.getString("userId");
-//                                String password = jsonResponse.getString("userPassword");
-//                                Intent intent = new Intent(LoginActivity.this, LoginTabActivity.class);
-//                                intent.putExtra("userId", userId);
-//                                intent.putExtra("userPassword", userPassword);
-//                                startActivity(intent);
-//                            }else{
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-//                                builder.setMessage("로그인에 실패했습니다.").
-//                                        setNegativeButton("다시 시도", null)
-//                                        .create()
-//                                        .show();
-//                            }
-//                        }catch(Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//
-//                LoginRequest loginRequest = new LoginRequest(userId, userPassword, responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-//                queue.add(loginRequest);
-//            }
-//        });
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();

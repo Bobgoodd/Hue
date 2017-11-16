@@ -7,22 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Network-LAB-taeu on 2017-11-13.
+ * Created by 다은 on 2017-11-16.
  */
 
-public class LoginRequest extends StringRequest {
-    final static private String url = "http://uoshue.dothome.co.kr/loginJ.php";
+public class IdCheckRequest extends StringRequest {
+    final static private String url = "http://uoshue.dothome.co.kr/idCheckJ.php";
     private Map<String, String> parameters;
 
-    public LoginRequest(String userId, String userPassword, Response.Listener<String> listener){
+    public IdCheckRequest(String userId, Response.Listener<String> listener) {
         super(Method.POST, url, listener, null);
         parameters = new HashMap<>();
         parameters.put("userId", userId);
-        parameters.put("userPassword", userPassword);
     }
 
     public Map<String, String> getParams(){
         return parameters;
     }
 }
-
