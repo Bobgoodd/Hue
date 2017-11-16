@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ public class ProjectTabFragment2 extends Fragment {
 
     View tab2;
     DocumentViewAdapter adapter;
+    String project_id;
+    String document_id;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -44,15 +48,31 @@ public class ProjectTabFragment2 extends Fragment {
         String url = "http://uoshue.dothome.co.kr/loadDocument.php?";
         ContentValues values = new ContentValues();
         SharedPreferences prefs = getActivity().getSharedPreferences("PrefName", Context.MODE_PRIVATE);
-        values.put("project_id",prefs.getString("project_id",null));
+        project_id = prefs.getString("project_id",null);
+        values.put("project_id",project_id);
         NetworkTask6 networkTask6 = new NetworkTask6(url, values);
         networkTask6.execute();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(tab2.getContext(), DocumentDetailActivity.class);
-                startActivity(intent);
+                document_id = String.valueOf(((DocumentViewItem)adapterView.getAdapter().getItem(i)).getDocumentId());
+                Log.d("문서",project_id+"/"+document_id);
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent intent = new Intent(tab2.getContext(), DocumentDetailActivity.class);
+                        intent.putExtra("project_id",project_id);
+                        intent.putExtra("document_id",document_id);
+                        startActivity(intent);
+
+                    }
+	            }, 10000);
+
+
+
             }
         });
 
@@ -113,7 +133,7 @@ public class ProjectTabFragment2 extends Fragment {
                         }
                         // 접근한 회원테이블에 id가 있는지 있으면 그 튜플 반환
                         // 튜플로부터 데이터를 뽑아 어댑터에 추가
-                        adapter.addItem(json.getString("name"), json.getString("created"), json.getString("updated"), memlist);
+                        adapter.addItem(json.getInt("id"),json.getString("name"), json.getString("created"), json.getString("updated"), memlist);
 
                     }
                 }

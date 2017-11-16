@@ -60,9 +60,10 @@ public class DocumentViewAdapter extends BaseAdapter{
         return view;
     }
 
-    public void addItem(String documentName, String createdTime, String modifiedTime, String participationId){
+    public void addItem(int documentId, String documentName, String createdTime, String modifiedTime, String participationId){
         DocumentViewItem documentViewItem = new DocumentViewItem();
 
+        documentViewItem.setDocumentId(documentId);
         documentViewItem.setDocumentName(documentName);
         documentViewItem.setCreatedTime(createdTime);
         documentViewItem.setModifiedTime(modifiedTime);
