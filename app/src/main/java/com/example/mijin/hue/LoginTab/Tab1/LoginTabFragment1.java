@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.mijin.hue.ProjectTab.ProjectTabActivity;
+import com.example.mijin.hue.ProjectTab.ProjectTabFragment;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 
@@ -25,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static android.content.Context.MODE_PRIVATE;
+
+
 
 
 public class LoginTabFragment1 extends Fragment {
@@ -109,9 +113,17 @@ public class LoginTabFragment1 extends Fragment {
                 editor.putString("project_id",String.valueOf(((ProjectViewItem)adapterView.getAdapter().getItem(i)).getProjectid()));
                 editor.commit();
                 Log.d("들어가라",prefs.getString("project_id",null));
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame, new ProjectTabFragment());
+                fragmentTransaction.commit();
+
+                /*
                 Intent intent = new Intent(view.getContext(), ProjectTabActivity.class);
                 //intent.putExtra("project_id", project_id);
                 startActivity(intent);
+                */
             }
         });
 /*

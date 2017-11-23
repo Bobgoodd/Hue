@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 
@@ -58,7 +61,7 @@ public class ProjectViewAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.projectview_item, viewGroup, false);
 
         }
-/*
+
         SwipeLayout swipeLayout =  (SwipeLayout) view.findViewById(R.id.swipeLayout);
 
 //set show mode.
@@ -80,11 +83,11 @@ public class ProjectViewAdapter extends BaseAdapter {
         Button modify = swipeLayout.findViewById(R.id.modify);
         modify.setOnClickListener(mOnclickListener);
 
-*/
+
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         final TextView projectName = (TextView) view.findViewById(R.id.projectName);
         TextView createdTime = (TextView) view.findViewById(R.id.createdTime);
-        TextView participatedID = (TextView) view.findViewById(R.id.participatedID);
+        //TextView participatedID = (TextView) view.findViewById(R.id.participatedID);
 
 
 
@@ -95,7 +98,7 @@ public class ProjectViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영
         projectName.setText(projectViewItem.getProjectName().toString());
         createdTime.setText(projectViewItem.getCreatedTime().toString());
-        participatedID.setText(projectViewItem.getParticipatedID().toString());
+        //participatedID.setText(projectViewItem.getParticipatedID().toString());
 
 
 
