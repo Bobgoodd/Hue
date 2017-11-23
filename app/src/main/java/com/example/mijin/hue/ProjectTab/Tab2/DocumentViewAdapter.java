@@ -45,14 +45,14 @@ public class DocumentViewAdapter extends BaseAdapter{
             view = inflater.inflate(R.layout.documentview_item, viewGroup, false);
         }
 
-        TextView documentName = (TextView) view.findViewById(R.id.documentName);
+        //TextView documentName = (TextView) view.findViewById(R.id.documentName);
         TextView createdTime = (TextView) view.findViewById(R.id.dcreatedTime);
         TextView modifiedTime = (TextView) view.findViewById(R.id.dmodifiedTime);
         TextView participationId = (TextView) view.findViewById(R.id.dparticipatedId);
 
         DocumentViewItem documentViewItem = documentViewList.get(i);
 
-        documentName.setText(documentViewItem.getDocumentName());
+        //documentName.setText(documentViewItem.getDocumentName());
         createdTime.setText(documentViewItem.getCreatedTime());
         modifiedTime.setText(documentViewItem.getModifiedTime());
         participationId.setText(documentViewItem.getParticipationId());
@@ -64,7 +64,7 @@ public class DocumentViewAdapter extends BaseAdapter{
         DocumentViewItem documentViewItem = new DocumentViewItem();
 
         documentViewItem.setDocumentId(documentId);
-        documentViewItem.setDocumentName(documentName);
+        //documentViewItem.setDocumentName(documentName);
         documentViewItem.setCreatedTime(createdTime);
         documentViewItem.setModifiedTime(modifiedTime);
         documentViewItem.setParticipationId(participationId);

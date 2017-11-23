@@ -28,13 +28,13 @@ public class DocumentViewItem {
     private String modifiedTime;
     private String participationId;
 
-    public String getDocumentName() {
+    /*public String getDocumentName() {
         return documentName;
     }
 
     public void setDocumentName(String documentName) {
         this.documentName = documentName;
-    }
+    }*/
 
     public String getCreatedTime() {
         return createdTime;

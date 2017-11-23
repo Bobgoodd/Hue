@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.mijin.hue.ProjectTab.Tab1.ProjectTabFragment1;
 import com.example.mijin.hue.ProjectTab.Tab2.ProjectTabFragment2;
 import com.example.mijin.hue.ProjectTab.Tab3.ProjectTabFragment3;
 import com.example.mijin.hue.ProjectTab.Tab4.ProjectTabFragment4;
@@ -28,7 +27,7 @@ public class ProjectTabPagerAdapter extends FragmentStatePagerAdapter {
         this.fm = fm;
         this.tabCount = tabCount;
 
-        this.tabList.add(new ProjectTabFragment1());
+        //this.tabList.add(new ProjectTabFragment1());
         this.tabList.add(new ProjectTabFragment2());
         this.tabList.add(new ProjectTabFragment3());
         this.tabList.add(new ProjectTabFragment4());
@@ -41,7 +40,7 @@ public class ProjectTabPagerAdapter extends FragmentStatePagerAdapter {
             case 0: return tabList.get(0);
             case 1: return tabList.get(1);
             case 2: return tabList.get(2);
-            case 3: return tabList.get(3);
+            //case 3: return tabList.get(3);
             default:
                 return null;
         }

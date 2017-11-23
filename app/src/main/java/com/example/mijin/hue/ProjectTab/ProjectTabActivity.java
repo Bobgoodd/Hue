@@ -1,15 +1,18 @@
 package com.example.mijin.hue.ProjectTab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.mijin.hue.ProjectTab.Tab1.ProjectTabFragment1;
 import com.example.mijin.hue.R;
+import com.melnykov.fab.FloatingActionButton;
 
 /**
  * Created by mijin on 2017-10-03.
@@ -33,11 +36,21 @@ public class ProjectTabActivity extends AppCompatActivity implements ProjectTabF
 
         // Initializing the TabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("회의방"));
-        tabLayout.addTab(tabLayout.newTab().setText("문서"));
-        tabLayout.addTab(tabLayout.newTab().setText("업무"));
-        tabLayout.addTab(tabLayout.newTab().setText("프로젝트 일정"));
+        //tabLayout.addTab(tabLayout.newTab().setText("회의방"));
+        tabLayout.addTab(tabLayout.newTab().setText("document"));
+        tabLayout.addTab(tabLayout.newTab().setText("todo"));
+        tabLayout.addTab(tabLayout.newTab().setText("schedule"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MeetingActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         // Initializing ViewPager
