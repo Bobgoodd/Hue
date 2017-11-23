@@ -29,8 +29,6 @@ import org.json.JSONObject;
 import static android.content.Context.MODE_PRIVATE;
 
 
-
-
 public class LoginTabFragment1 extends Fragment {
 
     View view;
