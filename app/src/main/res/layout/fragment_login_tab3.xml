@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="0dp"
-            android:text="검색"/>
+            android:text="검색"
+            android:background="@color/colorLogo"/>
 
     </LinearLayout>
 

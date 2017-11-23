@@ -1,7 +1,10 @@
 package com.example.mijin.hue;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,16 +19,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by Network-LAB-taeu on 2017-11-13.
  */
 
 public class RegisterActivity extends AppCompatActivity {
     String ID, password, email, name, confirm;
-    int idCheck=0;
+    boolean flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,28 +68,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        idText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                idCheck=0;
-            }
-        });
-
         duplicationCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ID = idText.getText().toString();
 
+                String url = "http://uoshue.dothome.co.kr/checkK.php?";
+                ContentValues values = new ContentValues();
+                values.put("id",ID);
+
+                NetworkTask15 networkTask15 = new NetworkTask15(url,values);
+                networkTask15.execute();
+
+/*
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -115,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 IdCheckRequest idCheckRequest = new IdCheckRequest(ID, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                queue.add(idCheckRequest);
+                queue.add(idCheckRequest);*/
             }
         });
 
@@ -157,34 +148,28 @@ public class RegisterActivity extends AppCompatActivity {
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
+
+                            /*
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
+*/
 
-                            if(success) {
-                                if(idCheck==1) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                    builder.setMessage("회원가입 완료").
-                                            setPositiveButton("확인", null).
-                                            create().show();
+                            if (response.equals("success")) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setMessage("회원가입 완료").
+                                        setPositiveButton("확인", null).
+                                        create().show();
 
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    RegisterActivity.this.startActivity(intent);
-                                }
-                                else {
-                                    Toast.makeText(RegisterActivity.this, "ID 중복을 검사하세요", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else {
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                RegisterActivity.this.startActivity(intent);
+                            } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 builder.setMessage("회원가입 실패").
                                         setNegativeButton("다시 시도", null).
                                         create().show();
                             }
-                        }
-                        catch(JSONException e) {
-                            e.printStackTrace();
-                        }
+
+
                     }
                 };
 
@@ -255,6 +240,64 @@ public class RegisterActivity extends AppCompatActivity {
 //        }
 //    }
 //
+
+    public class NetworkTask15 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+
+        public NetworkTask15(String url, ContentValues values) {
+
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result;
+            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(url, values);
+
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+
+            if(result!=null&&!result.equals("")) {
+                if(result.equals("success")){
+                    flag = true;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("사용가능합니다.");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.show();
+
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("다른 아이디를 사용해주세요.");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.show();
+                }
+            }
+
+
+
+        }
+    }
 
 
 }

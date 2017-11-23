@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.hmkcode.mongoz.MainActivity" >
+
+    <group android:checkableBehavior="all">
+
+        <item
+            android:id="@+id/main"
+            android:icon="@drawable/ic_main"
+            android:title="메인화면"/>
+
+        <item
+            android:id="@+id/navigation_item_1"
+            android:icon="@drawable/ic_project"
+            android:title="프로젝트"/>
+        <item
+            android:id="@+id/navigation_item_2"
+            android:icon="@drawable/ic_schedule"
+            android:title="일정관리"/>
+
+        <item
+            android:id="@+id/navigation_item_3"
+            android:icon="@drawable/ic_friend"
+            android:title="친구목록"/>
+
+    </group>
+
+    <group>
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_logout"
+            android:title="로그아웃"/>
+
+    </group>
+</menu>

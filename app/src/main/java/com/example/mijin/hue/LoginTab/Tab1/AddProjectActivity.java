@@ -93,7 +93,7 @@ public class AddProjectActivity extends AppCompatActivity {
                     values = new ContentValues();
 
                     values.put("director_id",prefs.getString("id",null));
-                    values.put("name","프로젝트");
+                    values.put("name","project");
                     for(int k=0;k<mem.size();k++) {
                         values.put("usr_id" + k, mem.get(k).getId());
                     }

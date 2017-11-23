@@ -19,7 +19,6 @@ import android.widget.ListView;
 import com.example.mijin.hue.ProjectTab.ProjectTabActivity;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
-import com.melnykov.fab.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,10 +97,10 @@ public class LoginTabFragment1 extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.projectList);
         listView.setAdapter(adapter);
-
+/*
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-
-
+        fab.setVisibility(View.VISIBLE);
+*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -115,7 +114,7 @@ public class LoginTabFragment1 extends Fragment {
                 startActivity(intent);
             }
         });
-
+/*
 
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -123,10 +122,10 @@ public class LoginTabFragment1 extends Fragment {
                 Intent intent = new Intent(getContext(), AddProjectActivity.class);
                 startActivity(intent);
 
-
             }
         });
 
+        */
 
         return view;
     }
@@ -257,7 +256,7 @@ public class LoginTabFragment1 extends Fragment {
                     adapter.notifyDataSetChanged();
 */
                     project_id=String.valueOf(v.getTag(R.string.tag1));
-                    Intent intent2 = new Intent(getContext(), ModifyProjectActivity.class);
+                    Intent intent2 = new Intent(getActivity(), ModifyProjectActivity.class);
                     intent2.putExtra("project_id",project_id);
                     startActivity(intent2);
 

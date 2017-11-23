@@ -52,7 +52,15 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new Button.OnClickListener() {
                                      @Override
                                      public void onClick(View view) {
-                                         if (idText.getText().toString() == null || passwordText.getText().toString() == null) {
+                                         if (!idText.getText().toString().equals("") && !passwordText.getText().toString().equals("")) {
+                                             String url = "http://uoshue.dothome.co.kr/loginK.php";
+                                             ContentValues values = new ContentValues();
+                                             values.put("id",idText.getText().toString());
+                                             values.put("pw",passwordText.getText().toString());
+
+                                             NetworkTask14 networkTask14 = new NetworkTask14(url, values);
+                                             networkTask14.execute();
+                                         } else {
                                              AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                                              builder.setMessage("로그인 정보를 입력해주세요.");
                                              builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -62,15 +70,7 @@ public class LoginActivity extends Activity {
                                                  }
                                              });
                                              builder.show();
-                                         } else {
 
-                                             String url = "http://uoshue.dothome.co.kr/loginK.php";
-                                             ContentValues values = new ContentValues();
-                                             values.put("id",idText.getText().toString());
-                                             values.put("pw",passwordText.getText().toString());
-
-                                             NetworkTask14 networkTask14 = new NetworkTask14(url, values);
-                                             networkTask14.execute();
 
                                          }
                                      }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mijin.hue.R;
@@ -26,7 +25,6 @@ public class ProjectViewAdapter extends BaseAdapter {
     ContentValues values;
     ProjectViewItem projectViewItem;
     NetworkTask4 networkTask4;
-    Button delete, modify;
     View.OnClickListener mOnclickListener;
 
 
@@ -58,19 +56,31 @@ public class ProjectViewAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.projectview_item, viewGroup, false);
-            delete = (Button) view.findViewById(R.id.delete);
-            modify = (Button) view.findViewById(R.id.modify);
-
-
-            delete.setOnClickListener(mOnclickListener);
-            modify.setOnClickListener(mOnclickListener);
-            delete.setTag(R.string.tag,projectViewList.get(i).getProjectid());
-            modify.setTag(R.string.tag1,projectViewList.get(i).getProjectid());
-
-
 
         }
+/*
+        SwipeLayout swipeLayout =  (SwipeLayout) view.findViewById(R.id.swipeLayout);
 
+//set show mode.
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+//add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, view.findViewById(R.id.bottom_wrapper));
+
+        swipeLayout.addSwipeListener(new SimpleSwipeListener(){
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                super.onOpen(layout);
+            }
+        });
+
+        Button delete = swipeLayout.findViewById(R.id.delete);
+        delete.setOnClickListener(mOnclickListener);
+
+        Button modify = swipeLayout.findViewById(R.id.modify);
+        modify.setOnClickListener(mOnclickListener);
+
+*/
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         final TextView projectName = (TextView) view.findViewById(R.id.projectName);
         TextView createdTime = (TextView) view.findViewById(R.id.createdTime);
@@ -83,9 +93,9 @@ public class ProjectViewAdapter extends BaseAdapter {
         projectViewItem = projectViewList.get(i);
 
         // 아이템 내 각 위젯에 데이터 반영
-        projectName.setText(projectViewItem.getProjectName());
+        projectName.setText(projectViewItem.getProjectName().toString());
         createdTime.setText(projectViewItem.getCreatedTime().toString());
-        participatedID.setText(projectViewItem.getParticipatedID());
+        participatedID.setText(projectViewItem.getParticipatedID().toString());
 
 
 

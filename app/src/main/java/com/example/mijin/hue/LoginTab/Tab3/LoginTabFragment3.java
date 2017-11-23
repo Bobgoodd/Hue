@@ -1,7 +1,6 @@
 package com.example.mijin.hue.LoginTab.Tab3;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -104,7 +103,7 @@ public class LoginTabFragment3 extends Fragment{
             }
         });
 
-
+/*
         fabb = (com.melnykov.fab.FloatingActionButton) tab3.findViewById(R.id.fabb);
         fabb.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -114,7 +113,7 @@ public class LoginTabFragment3 extends Fragment{
             }
         });
 
-
+*/
 
         return tab3;
     }
