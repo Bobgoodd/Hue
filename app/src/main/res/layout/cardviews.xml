@@ -22,7 +22,7 @@
 
         android:layout_margin="@dimen/card_margin"
 
-        app:cardBackgroundColor="@color/transparent">
+        app:cardBackgroundColor="#00FFFFFF">
 
 
 
@@ -86,7 +86,7 @@
 
         android:layout_marginRight="@dimen/card_margin"
 
-        app:cardBackgroundColor="@color/transparent">
+        app:cardBackgroundColor="#00FFFFFF">
 
 
 
@@ -148,7 +148,7 @@
 
         android:layout_marginRight="@dimen/card_margin"
 
-        app:cardBackgroundColor="@color/transparent">
+        app:cardBackgroundColor="#00FFFFFF">
 
 
 

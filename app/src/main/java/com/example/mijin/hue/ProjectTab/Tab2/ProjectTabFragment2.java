@@ -69,7 +69,7 @@ public class ProjectTabFragment2 extends Fragment {
                         startActivity(intent);
 
                     }
-	            }, 10000);
+	            }, 1000);
 
 
 

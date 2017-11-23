@@ -20,6 +20,15 @@
     </intent-filter>
 </activity>
 
+
+        <activity android:name=".ProjectTab.ProjectTabActivity" />
+        <activity android:name=".ProjectTab.Tab2.DocumentDetailActivity" />
+        <activity android:name=".FindIdActivity"/>
+        <activity android:name=".FindPwActivity"/>
+        <activity android:name=".UpdatePwActivity"/>
+        <activity android:name=".FindInformationActivity"/>
+        <activity android:name=".ProjectTab.MeetingActivity"></activity>
+        <activity android:name=".LoginTab.Tab3.NewFriendActivity"/>
         <!--
         <activity android:name=".SplashActivity"
             android:screenOrientation="portrait">
