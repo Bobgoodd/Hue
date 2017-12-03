@@ -3,7 +3,6 @@ package com.example.mijin.hue;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -36,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText nameText = (EditText) findViewById(R.id.nameText);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
         final EditText passwordText2 = (EditText) findViewById(R.id.passwordText2);
+        final TextView passwordCheck = (TextView) findViewById(R.id.passwordcheck);
 
         Button duplicationCheckButton = (Button)findViewById(R.id.duplicationCheckButton);
         Button registerButton = (Button) findViewById(R.id.registerButton);
@@ -54,11 +55,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String confirm = passwordText2.getText().toString();
 
                 if(password.equals(confirm)){
-                    passwordText.setBackgroundColor(Color.GREEN);
-                    passwordText2.setBackgroundColor(Color.GREEN);
+                    passwordCheck.setText("비밀번호 확인 완료");
                 }else{
-                    passwordText.setBackgroundColor(Color.RED);
-                    passwordText2.setBackgroundColor(Color.RED);
+                    passwordCheck.setText("비밀번호가 다릅니다.");
                 }
             }
 
