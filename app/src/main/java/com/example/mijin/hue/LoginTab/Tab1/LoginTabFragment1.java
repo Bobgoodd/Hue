@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-
+import com.example.mijin.hue.AddProjectAllActivity;
 import com.example.mijin.hue.ProjectTab.ProjectTabFragment;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
@@ -101,6 +101,8 @@ public class LoginTabFragment1 extends Fragment {
                 //String project_id = String.valueOf(((ProjectViewItem)adapterView.getAdapter().getItem(i)).getProjectid());
 
                 editor.putString("project_id",String.valueOf(((ProjectViewItem)adapterView.getAdapter().getItem(i)).getProjectid()));
+                editor.putString("start",((ProjectViewItem)adapterView.getAdapter().getItem(i)).getStart());
+                editor.putString("end",((ProjectViewItem)adapterView.getAdapter().getItem(i)).getEnd());
                 editor.commit();
                 Log.d("들어가라",prefs.getString("project_id",null));
 
@@ -121,8 +123,8 @@ public class LoginTabFragment1 extends Fragment {
             @Override
             public void onClick(View view) {
                 //Intent intent = new Intent(getContext(), AddProjectAllActivity.class);
-                Intent intent = new Intent(getContext(), AddProjectActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getContext(), AddProjectAllActivity.class);
+                startActivityForResult(intent,55);
 
             }
         });
@@ -191,7 +193,7 @@ public class LoginTabFragment1 extends Fragment {
                         for (String str : spl) {
                             memlist += str + " ";
                         }
-                        adapter.addItem(json.getInt("id"), json.getString("name"), json.getString("created"), memlist);
+                        adapter.addItem(json.getInt("id"), json.getString("name"), json.getString("created"), memlist, json.getString("start"), json.getString("end"));
                     }
                 }
 
@@ -294,5 +296,12 @@ public class LoginTabFragment1 extends Fragment {
         networkTask3.execute();
         adapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //  if(requestCode==30&&resultCode==RESULT_OK)
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }

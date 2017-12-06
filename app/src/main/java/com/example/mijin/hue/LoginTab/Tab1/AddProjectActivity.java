@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.mijin.hue.LoginTab.Tab3.FriendViewAdapter;
 import com.example.mijin.hue.LoginTab.Tab3.FriendViewItem;
-import com.example.mijin.hue.MainActivity;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 
@@ -89,6 +88,12 @@ public class AddProjectActivity extends AppCompatActivity {
                     builder.show();
 
                 }else {
+
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("mem",mem);
+                    setResult(RESULT_OK,returnIntent);
+                    finish();
+                    /*
                     url =  "http://uoshue.dothome.co.kr/addProject.php?";
                     values = new ContentValues();
 
@@ -104,6 +109,8 @@ public class AddProjectActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putParcelableArrayListExtra("mem", mem);
                     startActivityForResult(intent, 0);
+                    */
+
                 }
             }
         });

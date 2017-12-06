@@ -1,6 +1,8 @@
 package com.example.mijin.hue.ProjectTab;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +30,10 @@ public class ProjectTabFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_projecttab,container,false);
+        SharedPreferences prefs = getActivity().getSharedPreferences("PrefName", Context.MODE_PRIVATE);
 
-
+        Log.d("시작시간",prefs.getString("start",null));
+        Log.d("종료시간",prefs.getString("end",null));
 
         // Adding Toolbar to the activity
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);

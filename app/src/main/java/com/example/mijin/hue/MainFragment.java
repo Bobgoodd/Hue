@@ -104,15 +104,18 @@ public class MainFragment extends Fragment {
 
                             case 1:
                                 card1.setVisibility(View.VISIBLE);
-                                cardTitle1.setText(((JSONObject) jarr2.get(0)).getString("title"));
+                                if(((JSONObject) jarr2.get(0)).getInt("project_id")==0) cardTitle1.setText(((JSONObject) jarr2.get(0)).getString("title"));
+                                else cardTitle1.setText("Project#"+((JSONObject) jarr2.get(0)).getInt("project_id"));
                                 cardCreated1.setText(((JSONObject) jarr2.get(0)).getString("updated"));
                                 break;
 
                             case 2:
                                 card1.setVisibility(View.VISIBLE);
                                 card2.setVisibility(View.VISIBLE);
-                                cardTitle1.setText(((JSONObject) jarr2.get(0)).getString("title"));
-                                cardTitle2.setText(((JSONObject) jarr2.get(1)).getString("title"));
+                                if(((JSONObject) jarr2.get(0)).getInt("project_id")==0) cardTitle1.setText(((JSONObject) jarr2.get(0)).getString("title"));
+                                else cardTitle1.setText("Project#"+((JSONObject) jarr2.get(0)).getInt("project_id"));
+                                if(((JSONObject) jarr2.get(1)).getInt("project_id")==0) cardTitle2.setText(((JSONObject) jarr2.get(1)).getString("title"));
+                                else cardTitle1.setText("Project#"+((JSONObject) jarr2.get(1)).getInt("project_id"));
                                 cardCreated1.setText(((JSONObject) jarr2.get(0)).getString("updated"));
                                 cardCreated2.setText(((JSONObject) jarr2.get(1)).getString("updated"));
                                 break;
@@ -121,9 +124,12 @@ public class MainFragment extends Fragment {
                                 card1.setVisibility(View.VISIBLE);
                                 card2.setVisibility(View.VISIBLE);
                                 card3.setVisibility(View.VISIBLE);
-                                cardTitle1.setText(((JSONObject) jarr2.get(0)).getString("title"));
-                                cardTitle2.setText(((JSONObject) jarr2.get(1)).getString("title"));
-                                cardTitle3.setText(((JSONObject) jarr2.get(2)).getString("title"));
+                                if(((JSONObject) jarr2.get(0)).getInt("project_id")==0) cardTitle1.setText(((JSONObject) jarr2.get(0)).getString("title"));
+                                else cardTitle1.setText("Project#"+((JSONObject) jarr2.get(0)).getInt("project_id"));
+                                if(((JSONObject) jarr2.get(1)).getInt("project_id")==0) cardTitle2.setText(((JSONObject) jarr2.get(1)).getString("title"));
+                                else cardTitle1.setText("Project#"+((JSONObject) jarr2.get(1)).getInt("project_id"));
+                                if(((JSONObject) jarr2.get(2)).getInt("project_id")==0) cardTitle3.setText(((JSONObject) jarr2.get(2)).getString("title"));
+                                else cardTitle1.setText("Project#"+((JSONObject) jarr2.get(2)).getInt("project_id"));
 
                                 cardCreated1.setText(((JSONObject) jarr2.get(0)).getString("updated"));
                                 cardCreated2.setText(((JSONObject) jarr2.get(1)).getString("updated"));

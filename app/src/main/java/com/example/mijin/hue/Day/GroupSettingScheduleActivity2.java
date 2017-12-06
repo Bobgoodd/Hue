@@ -1,7 +1,10 @@
 package com.example.mijin.hue.Day;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,19 +14,25 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.example.mijin.hue.BroadcastD;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
+
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 /**
  * Created by mijin on 2017-11-29.
@@ -38,10 +47,15 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
     int t, d, m, y, t2, d2, m2, y2;
     NetworkTask30 networkTask30;
     SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat ddformat = new SimpleDateFormat("yyyy-M-d");
+    Date to, from, settingTo, settingFrom;
     Calendar cal = Calendar.getInstance();
     Calendar calendar;
 
-    Intent in;
+    Intent in, intent;
+    PendingIntent sender;
+
+    AlarmManager am;
 
     @Override
 
@@ -50,11 +64,22 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_setting_schedule2);
+
+        am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         in = getIntent();
 
         SharedPreferences prefs = getSharedPreferences("PrefName",MODE_PRIVATE);
         id = prefs.getString("id",null);
         project_id = prefs.getString("project_id",null);
+
+        try {
+            to = ddformat.parse(prefs.getString("start",null));
+            from = ddformat.parse(prefs.getString("end",null));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
 
         eventName = (LinearLayout) findViewById(R.id.eventName);
         eventName.setVisibility(View.GONE);
@@ -67,14 +92,14 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
         startDay = (MaterialNumberPicker) findViewById(R.id.startDay);
         startHour = (MaterialNumberPicker) findViewById(R.id.startHour);
 
-        startText.setText(startYear.getValue()+"년"+startMonth.getValue()+"월"+startDay.getValue()+"일 "+startHour.getValue()+"시");
+
 
         endYear = (MaterialNumberPicker) findViewById(R.id.endYear);
         endMonth = (MaterialNumberPicker) findViewById(R.id.endMonth);
         endDay = (MaterialNumberPicker) findViewById(R.id.endDay);
         endHour = (MaterialNumberPicker) findViewById(R.id.endHour);
 
-        endText.setText(endYear.getValue()+"년"+endMonth.getValue()+"월"+endDay.getValue()+"일 "+endHour.getValue()+"시");
+
 
         startYear.setValue(cal.get(Calendar.YEAR));
         startMonth.setValue(cal.get(Calendar.MONTH)+1);
@@ -83,6 +108,7 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
         startDay.setValue(cal.get(Calendar.DATE));
         startHour.setValue(1);
 
+        startText.setText(startYear.getValue()+"년"+startMonth.getValue()+"월"+startDay.getValue()+"일 "+startHour.getValue()+"시");
 
         startYear.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -126,6 +152,8 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
         endDay.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         endDay.setValue(cal.get(Calendar.DATE));
         endHour.setValue(1);
+
+        endText.setText(endYear.getValue()+"년"+endMonth.getValue()+"월"+endDay.getValue()+"일 "+endHour.getValue()+"시");
 
         endYear.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -183,32 +211,32 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                 t=startHour.getValue();
                 sTime = y+"-"+m+"-"+d+" "+t+":00:00";
 
+
                 d2 = endDay.getValue();
                 m2 = endMonth.getValue();
                 y2 = endYear.getValue();
-
-                //t2 = endTime.getNewCurrentTime().getHourOfDay();
                 t2=endHour.getValue();
+                //t2 = endTime.getNewCurrentTime().getHourOfDay();
 
-                url = "http://uoshue.dothome.co.kr/addGroupSchedule.php?";
-                values = new ContentValues();
-                values.put("id", id);
-                values.put("project_id", project_id);
-                values.put("start",sTime);
 
-                if(y2<y){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this,R.style.MyAlertDialog);
-                    builder.setMessage("일정을 다시 확인해주세요.");
-                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    settingTo = ddformat.parse(y + "-" + m + "-" + d);
+                    settingFrom = ddformat.parse(y2 + "-" + m2 + "-" + d2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-                        }
-                    });
-                    builder.show();
-                }else if(y2==y){
-                    if(m2<m){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this,R.style.MyAlertDialog);
+
+
+                if(settingTo.compareTo(to)>=0&&settingFrom.compareTo(to)>=0&&settingTo.compareTo(from)<=0&&(settingFrom.compareTo(from)<=0||(settingFrom.compareTo(from)==1&&t2==0))) {
+                    url = "http://uoshue.dothome.co.kr/addGroupSchedule.php?";
+                    values = new ContentValues();
+                    values.put("id", id);
+                    values.put("project_id", project_id);
+                    values.put("start", sTime);
+
+                    if (y2 < y) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
                         builder.setMessage("일정을 다시 확인해주세요.");
                         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
@@ -217,9 +245,9 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                             }
                         });
                         builder.show();
-                    }else if(m2==m){
-                        if(d2<d){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this,R.style.MyAlertDialog);
+                    } else if (y2 == y) {
+                        if (m2 < m) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
                             builder.setMessage("일정을 다시 확인해주세요.");
                             builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
@@ -228,9 +256,9 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                                 }
                             });
                             builder.show();
-                        }else if(d2==d){
-                            if(t2<=t){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this,R.style.MyAlertDialog);
+                        } else if (m2 == m) {
+                            if (d2 < d) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
                                 builder.setMessage("일정을 다시 확인해주세요.");
                                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                     @Override
@@ -239,9 +267,20 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                                     }
                                 });
                                 builder.show();
-                            }else{
+                            } else if (d2 == d) {
+                                if (t2 <= t) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
+                                    builder.setMessage("일정을 다시 확인해주세요.");
+                                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    if(t2==0){
+                                        }
+                                    });
+                                    builder.show();
+                                } else {
+
+                                    if (t2 == 0) {
                                         eTime = y2 + "-" + m2 + "-" + d2 + " " + "23:59:59";
                                         try {
                                             cal.setTime(dformat.parse(eTime));
@@ -250,8 +289,7 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                                         } catch (ParseException e) {
                                             e.printStackTrace();
                                         }
-                                    }
-                                    else{
+                                    } else {
                                         eTime = y2 + "-" + m2 + "-" + d2 + " " + (t2 - 1) + ":59:59";
                                     }
 
@@ -261,9 +299,27 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                                     networkTask30.execute();
 
 
+                                }
+                            } else {//성공
+                                if (t2 == 0) {
+                                    eTime = y2 + "-" + m2 + "-" + d2 + " " + "23:59:59";
+                                    try {
+                                        cal.setTime(dformat.parse(eTime));
+                                        cal.add(Calendar.DATE, -1);
+                                        eTime = dformat.format(cal.getTime());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    eTime = y2 + "-" + m2 + "-" + d2 + " " + (t2 - 1) + ":59:59";
+                                }
+
+                                values.put("end", eTime);
+                                networkTask30 = new NetworkTask30(url, values);
+                                networkTask30.execute();
 
                             }
-                        }else{//성공
+                        } else {//성공
                             if (t2 == 0) {
                                 eTime = y2 + "-" + m2 + "-" + d2 + " " + "23:59:59";
                                 try {
@@ -282,7 +338,7 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                             networkTask30.execute();
 
                         }
-                    }else{//성공
+                    } else {//성공
                         if (t2 == 0) {
                             eTime = y2 + "-" + m2 + "-" + d2 + " " + "23:59:59";
                             try {
@@ -301,29 +357,47 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                         networkTask30.execute();
 
                     }
-                }else{//성공
-                    if (t2 == 0) {
-                        eTime = y2 + "-" + m2 + "-" + d2 + " " + "23:59:59";
-                        try {
-                            cal.setTime(dformat.parse(eTime));
-                            cal.add(Calendar.DATE, -1);
-                            eTime = dformat.format(cal.getTime());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
+                    builder.setMessage("프로젝트 일정을 벗어납니다. 일정을 다시 선택해주세요.");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
                         }
-                    } else {
-                        eTime = y2 + "-" + m2 + "-" + d2 + " " + (t2 - 1) + ":59:59";
-                    }
-
-                    values.put("end", eTime);
-                    networkTask30 = new NetworkTask30(url, values);
-                    networkTask30.execute();
-
+                    });
+                    builder.show();
                 }
 
 
+            }
+        });
+
+        CheckBox alarm = (CheckBox) findViewById(R.id.alarm);
+        alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b==true){
 
 
+                    intent = new Intent(GroupSettingScheduleActivity2.this, BroadcastD.class);
+                    intent.putExtra("isGroupSetting",true);
+                    intent.putExtra("content",id+"님의 Project#"+project_id+" 일정");
+
+                    sender = PendingIntent.getBroadcast(GroupSettingScheduleActivity2.this, 0, intent,  FLAG_UPDATE_CURRENT);
+
+                    Calendar calendar = Calendar.getInstance();
+                    //알람시간 calendar에 set해주기
+
+                    calendar.set(y, m, d, t, 0, 0);
+
+                    //알람 예약
+                    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+
+                }else{
+                    am.cancel(sender);
+                }
             }
         });
 

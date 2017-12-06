@@ -42,6 +42,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.prolificinteractive.materialcalendarview.R.id.out_of_range;
+
 
 /**
  * Created by mijin on 2017-10-03.
@@ -56,25 +58,41 @@ public class ProjectTabFragment4 extends Fragment {
     NetworkTask17 networkTask17;
     SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
     ArrayList<CalendarDay> calendarDays = new ArrayList<CalendarDay>();
+
+    String[] start,end;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         tab2 = inflater.inflate(R.layout.fragment_login_tab2, container, false);
 
         prefs = getActivity().getSharedPreferences("PrefName", Context.MODE_PRIVATE);
+
+        start = prefs.getString("start",null).split("-");
+        end = prefs.getString("end",null).split("-");
+
+        for(String s : start){
+            Log.d("시작시간",s);
+        }
+
+        for(String e : end){
+            Log.d("종료시간",e);
+        }
+
         materialCalendarView = (MaterialCalendarView) tab2.findViewById(R.id.calendarView);
 
 
         materialCalendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2017, 11, 1))
-                .setMaximumDate(CalendarDay.from(2017, 11, 31))
+                .setMinimumDate(CalendarDay.from(Integer.parseInt(start[0]), Integer.parseInt(start[1])-1, Integer.parseInt(start[2])))
+                .setMaximumDate(CalendarDay.from(Integer.parseInt(end[0]), Integer.parseInt(end[1])-1, Integer.parseInt(end[2])))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
 
+        materialCalendarView.setShowOtherDates(out_of_range);
         materialCalendarView.addDecorator(new SundayDecorator());
         materialCalendarView.addDecorator(new SaturdayDecorator());
         materialCalendarView.addDecorator(new OneDayDecorator());
+        materialCalendarView.addDecorator(new RangedayDecorator());
 
         load();
 
@@ -135,9 +153,13 @@ public class ProjectTabFragment4 extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            day.copyTo(calendar);
-            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-            return weekDay == Calendar.SATURDAY;
+            if(day.isInRange(CalendarDay.from(Integer.parseInt(start[0]), Integer.parseInt(start[1])-1, Integer.parseInt(start[2])),CalendarDay.from(Integer.parseInt(end[0]), Integer.parseInt(end[1])-1, Integer.parseInt(end[2]))))
+            {
+                day.copyTo(calendar);
+                int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+                return weekDay == Calendar.SATURDAY;
+            }
+            else return false;
         }
 
         @Override
@@ -155,14 +177,34 @@ public class ProjectTabFragment4 extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            day.copyTo(calendar);
-            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-            return weekDay == Calendar.SUNDAY;
+            if(day.isInRange(CalendarDay.from(Integer.parseInt(start[0]), Integer.parseInt(start[1])-1, Integer.parseInt(start[2])),CalendarDay.from(Integer.parseInt(end[0]), Integer.parseInt(end[1])-1, Integer.parseInt(end[2])))) {
+                day.copyTo(calendar);
+                int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+                return weekDay == Calendar.SUNDAY;
+            }else return false;
         }
 
         @Override
         public void decorate(DayViewFacade view) {
             view.addSpan(new ForegroundColorSpan(Color.RED));
+        }
+    }
+
+    public class RangedayDecorator implements DayViewDecorator {
+
+        private final Calendar calendar = Calendar.getInstance();
+
+        public RangedayDecorator() {
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return day.isInRange(CalendarDay.from(Integer.parseInt(start[0]), Integer.parseInt(start[1])-1, Integer.parseInt(start[2])),CalendarDay.from(Integer.parseInt(end[0]), Integer.parseInt(end[1])-1, Integer.parseInt(end[2])));
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new StyleSpan(Typeface.BOLD));
         }
     }
 

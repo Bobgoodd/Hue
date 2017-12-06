@@ -65,7 +65,6 @@ public class GroupDayScheduleFragment extends Fragment implements WeekView.Event
         project_id = prefs.getString("project_id",null);
 
 
-
         mWeekView = (WeekView) view.findViewById(R.id.weekView);
         mWeekView.setDefaultEventColor(getResources().getColor(R.color.colorLogoTransparent));
         mWeekView.setShowDistinctPastFutureColor(true);

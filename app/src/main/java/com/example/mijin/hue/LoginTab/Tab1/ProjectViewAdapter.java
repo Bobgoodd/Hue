@@ -114,13 +114,15 @@ public class ProjectViewAdapter extends BaseAdapter {
 
     }
 
-    public void addItem(int id, String projectName, String createdTime, String participatedID) {
+    public void addItem(int id, String projectName, String createdTime, String participatedID, String start, String end) {
         ProjectViewItem projectViewItem = new ProjectViewItem();
 
         projectViewItem.setProjectid(id);
         projectViewItem.setProjectName(projectName);
         projectViewItem.setCreatedTime(createdTime);
         projectViewItem.setParticipatedID(participatedID);
+        projectViewItem.setStart(start);
+        projectViewItem.setEnd(end);
 
         projectViewList.add(projectViewItem);
     }

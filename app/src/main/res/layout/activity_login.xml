@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="220dp"
+            android:layout_width="250dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginTop="90dp"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:layout_columnWeight="2"
+            android:layout_columnWeight="1"
             android:layout_gravity="center|fill_horizontal"
             android:inputType="text" />
 
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:layout_columnWeight="2"
+            android:layout_columnWeight="1"
             android:layout_gravity="center|fill_horizontal"
             android:inputType="numberPassword" />
 

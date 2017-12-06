@@ -10,6 +10,8 @@ public class ProjectViewItem {
     private String projectName;
     private String createdTime;
     private String participatedID;
+    private String start;
+    private String end;
 
     public int getProjectid() {
         return projectid;
@@ -43,4 +45,19 @@ public class ProjectViewItem {
         this.participatedID = participatedID;
     }
 
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
 }

@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_weight="1">
         <biz.kasual.materialnumberpicker.MaterialNumberPicker
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -45,23 +46,14 @@
             app:npTextSize="25sp"
             android:id="@+id/startDay"/>
 
-        <biz.kasual.materialnumberpicker.MaterialNumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:npMinValue="0"
-            app:npMaxValue="23"
-            app:npBackgroundColor="@color/colorWhite"
-            app:npSeparatorColor="#00000000"
-            app:npTextColor="@color/colorLogo"
-            app:npTextSize="25sp"
-            android:id="@+id/startHour"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorLogo">
+        android:background="@color/colorLogo"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,7 +82,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_weight="1">
         <biz.kasual.materialnumberpicker.MaterialNumberPicker
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -123,22 +116,13 @@
             app:npTextSize="25sp"
             android:id="@+id/endDay"/>
 
-        <biz.kasual.materialnumberpicker.MaterialNumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:npMinValue="0"
-            app:npMaxValue="23"
-            app:npBackgroundColor="@color/colorWhite"
-            app:npSeparatorColor="#00000000"
-            app:npTextColor="@color/colorLogo"
-            app:npTextSize="25sp"
-            android:id="@+id/endHour"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorLogo">
+        android:background="@color/colorLogo"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -169,7 +153,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -196,46 +180,24 @@
 
     
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <EditText
-                android:id="@+id/friendId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:hint="친구 ID 검색"/>
-
-            <Button
-                android:id="@+id/search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="0dp"
-                android:text="검색"
-                android:background="@color/colorLogo"/>
-
-        </LinearLayout>
-
         <Button
+            android:id="@+id/addFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_border"
+            android:layout_gravity="center"
             android:text="친구추가"
             android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:layout_weight="1"/>
 
         <ScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:visibility="gone"
+            android:layout_weight="1">
 
 
                 <ListView
@@ -247,7 +209,33 @@
 
         </ScrollView>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/save2"
+                android:text="저장"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:background="@color/colorLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/cancel2"
+                android:text="취소"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:background="@color/colorLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
+
 </LinearLayout>
