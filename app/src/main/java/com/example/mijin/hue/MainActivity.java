@@ -1,5 +1,7 @@
 package com.example.mijin.hue;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -37,18 +40,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         SharedPreferences prefs = getSharedPreferences("PrefName",MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("id","mijin054");
+        //SharedPreferences.Editor editor = prefs.edit();
+        //editor.putString("id","mijin054");
+
+        Log.d("사용자",prefs.getString("id",null));
 
         setupToolbar();
         setupNavigationView();
        // setupTablayout();
-
-        fragment = new MainFragment();
+        Bundle b;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame, fragment);
-        fragmentTransaction.commit();
+
+        Intent intent = getIntent();
+        Intent returnIntent = new Intent();
+        if(intent!=null) {
+            if (intent.getParcelableExtra("new") != null) {
+                setResult(Activity.RESULT_OK, returnIntent);
+
+                b = new Bundle();
+                b.putParcelable("new", intent.getParcelableExtra("new"));
+
+                fragment = new LoginTabFragment3();
+                fragment.setArguments(b);
+
+                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+
+            } else if (intent.getParcelableArrayListExtra("mem") != null) {
+                setResult(Activity.RESULT_OK, returnIntent);
+
+                b = new Bundle();
+                b.putParcelableArrayList("mem", intent.getParcelableArrayListExtra("mem"));
+
+                fragment = new LoginTabFragment1();
+                fragment.setArguments(b);
+
+                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+            } else {
+
+                fragment = new MainFragment();
+
+                fragmentTransaction.add(R.id.frame, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        }
 
 
 
@@ -132,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
+
+
 /*
     private void setupTablayout(){
 
@@ -143,5 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.addTab(tabLayout.newTab().setText("Tab 4"));
     }
   */
+
+
 }
 

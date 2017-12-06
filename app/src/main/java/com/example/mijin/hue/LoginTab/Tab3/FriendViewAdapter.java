@@ -88,6 +88,7 @@ public class FriendViewAdapter extends BaseAdapter implements Filterable {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.friendview_item, viewGroup, false);
+            view.findViewById(R.id.ch).setVisibility(View.GONE);
 
         }
 
@@ -112,7 +113,7 @@ public class FriendViewAdapter extends BaseAdapter implements Filterable {
         friendEmail.setText(friendViewItem.getEmail());
         friendPhone.setText(friendViewItem.getPhone());
 
-        ch = view.findViewById(R.id.ch);
+        ch = (CheckBox)view.findViewById(R.id.ch);
 
         if(flag==true){
             ch.setVisibility(View.VISIBLE);

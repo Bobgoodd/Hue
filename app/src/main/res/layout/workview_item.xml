@@ -1,110 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="80dp"
+android:id="@+id/swipeLayout">
+<!-- Bottom View Start-->
+<LinearLayout
+    android:background="@color/colorLogo"
+    android:id="@+id/bottom_wrapper"
+    android:layout_width="wrap_content"
+    android:weightSum="1"
+    android:layout_height="match_parent">
+    <!--What you want to show-->
+    <Button
+        android:id="@+id/wmodify"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        android:background="@drawable/button_border"
+        android:text="수정"
+        android:textStyle="bold"
+        android:textColor="@color/colorWhite"/>
+
+    <Button
+        android:id="@+id/wdelete"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        android:background="@drawable/button_border"
+        android:text="삭제"
+        android:textStyle="bold"
+        android:textColor="@color/colorWhite"/>
+
+</LinearLayout>
+<!-- Bottom View End-->
+
+<!-- Surface View Start -->
+<LinearLayout
+    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="25dp"
-    android:rowCount="4"
-    android:columnCount="2">
-
-    <TextView
-        android:id="@+id/workName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="3"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorLogo"/>
+    android:orientation="vertical">
+    <!--What you want to show in SurfaceView-->
 
 
-    <Button
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_rowSpan="2"
-        android:layout_gravity="center"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/delete"/>
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="3"
-        android:rowCount="1"
-        android:columnCount="2"
-        android:layout_gravity="start" >
+</LinearLayout>
 
 
-    <TextView
-        android:id="@+id/dueTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_columnWeight="2"
-        android:textSize="10dp"
-        android:textColor="@color/colorGray" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp">
 
-    <TextView
-        android:id="@+id/d_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_columnWeight="1"
-        android:textSize="10dp"
-        android:textColor="@color/colorGray" />
+        <TextView
+            android:id="@+id/workName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:textColor="@color/colorLogo"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
 
-    </GridLayout>
-
-    <TextView
-        android:id="@+id/wparticipatedId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="3"
-        android:textSize="15dp"
-        android:textColor="@color/colorGray"/>
-
-    <Button
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_rowSpan="2"
-        android:layout_gravity="center"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/modify"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
 
 
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="3"
-        android:rowCount="1"
-        android:columnCount="2">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="250dp"
-            android:layout_height="5dp"
-            android:layout_columnWeight="3"
-            android:layout_gravity="center_vertical|left"
-            android:max="100"
-            style="@android:style/Widget.ProgressBar.Horizontal"/>
-
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="250dp"
+                android:layout_height="5dp"
+                android:layout_columnWeight="3"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:max="100"
+                android:progressTint="@color/colorLogo"
+                android:progressBackgroundTint="@color/colorGray"/>
 
         <TextView
             android:id="@+id/progressBarStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
             android:layout_columnWeight="1"
-            android:textColor="@color/colorGray"/>
+            android:layout_gravity="center"
+            android:textColor="@color/colorGray" />
 
-    </GridLayout>
 
 
-</GridLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Surface View End -->
+</com.daimajia.swipe.SwipeLayout>

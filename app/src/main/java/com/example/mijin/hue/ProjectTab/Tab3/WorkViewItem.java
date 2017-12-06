@@ -1,48 +1,29 @@
 package com.example.mijin.hue.ProjectTab.Tab3;
 
-import java.util.Date;
-
 /**
  * Created by mijin on 2017-10-03.
  */
 
 public class WorkViewItem {
-    private String workName;
-    private Date dueTime;
-    private int d_day;
-    private String participationId;
+    private int id;
+    private String item;
     private int progress;
 
-    public String getWorkName() {
-        return workName;
+
+    public int getId() {
+        return id;
     }
 
-    public void setWorkName(String workName) {
-        this.workName = workName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Date getDueTime() {
-        return dueTime;
+    public String getItem() {
+        return item;
     }
 
-    public void setDueTime(Date dueTime) {
-        this.dueTime = dueTime;
-    }
-
-    public int getD_day() {
-        return d_day;
-    }
-
-    public void setD_day(int d_day) {
-        this.d_day = d_day;
-    }
-
-    public String getParticipationId() {
-        return participationId;
-    }
-
-    public void setParticipationId(String participationId) {
-        this.participationId = participationId;
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public int getProgress() {

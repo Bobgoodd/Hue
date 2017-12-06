@@ -19,13 +19,16 @@ import com.melnykov.fab.FloatingActionButton;
  * Created by mijin on 2017-11-24.
  */
 
-public class ProjectTabFragment extends Fragment {
+public class ProjectTabFragment extends Fragment{
     ViewPager viewPager;
     TabLayout tabLayout;
+    ProjectTabPagerAdapter pagerAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_projecttab,container,false);
+
+
 
         // Adding Toolbar to the activity
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -55,10 +58,19 @@ public class ProjectTabFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.pager);
 
         // Creating TabPagerAdapter adapter
-        ProjectTabPagerAdapter pagerAdapter = new ProjectTabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        pagerAdapter = new ProjectTabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
+        //viewPager.setAdapter(new ProjectTabPagerAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount()));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+/*
+        Bundle b = getArguments();
+        if(b!=null){
+            if(b.getBoolean("workadd")==true||b.getBoolean("workedit")==true){
+                viewPager.setCurrentItem(1);
+            }
+        }
 
+*/
         /*
         Fragment f;
         Bundle b = new Bundle();
@@ -84,16 +96,17 @@ public class ProjectTabFragment extends Fragment {
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
+
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                pagerAdapter.notifyDataSetChanged();
             }
         });
 
+
         return view;
     }
-
 
 }

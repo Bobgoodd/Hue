@@ -47,7 +47,7 @@ public class UpdatePwActivity extends Activity {
                         networkTask10.execute();
 
                     }else{
-                        AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this,R.style.MyAlertDialog);
                         builder.setMessage("새 비밀번호가 불일치합니다.");
                         builder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                             @Override
@@ -58,7 +58,7 @@ public class UpdatePwActivity extends Activity {
                         builder.show();
                     }
                 }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("정보를 입력해주세요.");
                     builder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                         @Override
@@ -101,7 +101,7 @@ public class UpdatePwActivity extends Activity {
 
             if(result!=null) {
                 if(result.equals("success")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("변경되었습니다.");
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
@@ -114,7 +114,7 @@ public class UpdatePwActivity extends Activity {
                     startActivity(intent);
 
                 }else if(result.equals("err")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdatePwActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("다시 입력해주세요.");
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override

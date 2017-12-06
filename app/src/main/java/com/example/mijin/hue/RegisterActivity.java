@@ -154,7 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
 */
 
                             if (response.equals("success")) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this,R.style.MyAlertDialog);
                                 builder.setMessage("회원가입 완료").
                                         setPositiveButton("확인", null).
                                         create().show();
@@ -162,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this,R.style.MyAlertDialog);
                                 builder.setMessage("회원가입 실패").
                                         setNegativeButton("다시 시도", null).
                                         create().show();
@@ -270,7 +270,7 @@ public class RegisterActivity extends AppCompatActivity {
             if(result!=null&&!result.equals("")) {
                 if(result.equals("success")){
                     flag = true;
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("사용가능합니다.");
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
@@ -281,7 +281,7 @@ public class RegisterActivity extends AppCompatActivity {
                     builder.show();
 
                 }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("다른 아이디를 사용해주세요.");
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override

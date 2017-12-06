@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorLogo">
 
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="220dp"
+        android:layout_height="150dp"
         android:gravity="center"
-        android:src="@drawable/logohue" />
+        android:src="@drawable/hue" />
 
     <GridLayout
         android:rowCount="2"
@@ -18,14 +19,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp">
+        android:layout_margin="20dp">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="새 비밀번호"/>
+            android:text="새 비밀번호"
+            android:textAlignment="center"
+            android:textStyle="bold" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -33,13 +36,18 @@
             android:maxLines="1"
             android:gravity="center"
             android:id="@+id/inputNewPw1"
-            android:layout_columnWeight="3"/>
+            android:layout_columnWeight="3"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="numberPassword"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="새 비밀번호 확인"/>
+            android:text="새 비밀번호 확인"
+            android:textAlignment="center"
+            android:textStyle="bold" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -47,7 +55,10 @@
             android:maxLines="1"
             android:gravity="center"
             android:id="@+id/inputNewPw2"
-            android:layout_columnWeight="3"/>
+            android:layout_columnWeight="3"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="numberPassword"/>
 
     </GridLayout>
 
@@ -56,8 +67,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/updatePw"
         android:text="변경"
-        android:textColor="@color/colorWhite"
-        android:background="@color/colorLogo"/>
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/colorLogo"
+        android:background="@drawable/button_border"/>
 
 
 </LinearLayout>

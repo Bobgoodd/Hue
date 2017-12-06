@@ -94,7 +94,7 @@ public class RequestHttpURLConnection {
             os.close(); // 출력 스트림을 닫고 모든 시스템 자원을 해제.
             Log.d("연결","output 닫기");
 */
-            OutputStreamWriter outStream = new OutputStreamWriter(urlConn.getOutputStream(), "UTF-8");
+            OutputStreamWriter outStream = new OutputStreamWriter(urlConn.getOutputStream(), "EUC-KR");
             PrintWriter writer = new PrintWriter(outStream);
             writer.write(strParams);
             writer.flush();
@@ -107,7 +107,7 @@ public class RequestHttpURLConnection {
 
             // [2-4]. 읽어온 결과물 리턴.
             // 요청한 URL의 출력물을 BufferedReader로 받는다.
-            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "EUC-KR"));
             // 출력물의 라인과 그 합에 대한 변수.
             Log.d("연결2", "input 받아오기");
 

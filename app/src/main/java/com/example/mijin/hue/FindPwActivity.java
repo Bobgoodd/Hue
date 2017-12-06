@@ -45,7 +45,7 @@ public class FindPwActivity extends Activity {
 
 
                 }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("정보를 입력해주세요.");
                     builder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                         @Override
@@ -95,7 +95,7 @@ public class FindPwActivity extends Activity {
                     startActivity(intent);
 
                     }else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this,R.style.MyAlertDialog);
                         builder.setMessage("정보를 찾을 수 없습니다.");
                         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override

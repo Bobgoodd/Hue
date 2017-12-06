@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+<!--
+            <DatePicker
+                android:id="@+id/startDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+-->
+            <com.tsongkha.spinnerdatepicker.DatePicker
+                android:id="@+id/startDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </com.tsongkha.spinnerdatepicker.DatePicker>
+            <!--           <FrameLayout
+                           android:id="@+id/startDate"
+                           android:layout_width="wrap_content"
+                           androidout_height="wrap_content" />
+
+                       <com.tripadvisor.seekbar.ClockView
+                           android:id="@+id/startTime"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1" />
+           -->
+            <!--             <FrameLayout
+                            android:id="@+id/startTime"
+                            android:layout_width="wrap_content"
+                            andrayout_height="wrap_content" />-->
+               <NumberPicker
+                            android:id="@+id/startTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/NumbePickerStyle">
+
+                        </NumberPicker>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--
+            <DatePicker
+                android:id="@+id/endDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
+                android:spinnersShown="true"
+                android:layout_gravity="center_horizontal" />
+                -->
+<com.tsongkha.spinnerdatepicker.DatePicker
+    android:id="@+id/endDate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+</com.tsongkha.spinnerdatepicker.DatePicker>
+            <!--           <FrameLayout
+
+                           android:layout_width="wrap_content"
+                           androidout_height="wrap_content" />
+
+                       <com.tripadvisor.seekbar.ClockView
+                           android:id="@+id/endTime"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1" />
+                           -->
+            <!--              <FrameLayout
+                           android:id="@+id/endTime"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content" />-->
+         <NumberPicker
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/NumbePickerStyle"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="저장"
+            android:background="@color/colorLogo"
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:layout_weight="1"
+            android:background="@color/colorLogo"
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>

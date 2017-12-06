@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.mijin.hue.LoginTab.LoginTabActivity;
+import com.example.mijin.hue.MainActivity;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 
@@ -97,7 +97,7 @@ public class NewFriendActivity extends AppCompatActivity{
 
                 FriendViewItem item = (FriendViewItem) adapterView.getAdapter().getItem(i);
                 Toast.makeText(getApplicationContext(), item.getId().toString(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), LoginTabActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 //Intent intent = new Intent(view.getContext(), LoginTabFragment3.class);
                 //intent.putExtra("newactivity", true);
                 intent.putExtra("new", item); // 한명씩 추가

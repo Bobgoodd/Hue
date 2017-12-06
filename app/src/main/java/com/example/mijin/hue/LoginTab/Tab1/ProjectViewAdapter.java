@@ -77,11 +77,6 @@ public class ProjectViewAdapter extends BaseAdapter {
             }
         });
 
-        Button delete = swipeLayout.findViewById(R.id.delete);
-        delete.setOnClickListener(mOnclickListener);
-
-        Button modify = swipeLayout.findViewById(R.id.modify);
-        modify.setOnClickListener(mOnclickListener);
 
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
@@ -95,12 +90,23 @@ public class ProjectViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         projectViewItem = projectViewList.get(i);
 
+        int project_id = projectViewItem.getProjectid();
+
         // 아이템 내 각 위젯에 데이터 반영
         projectName.setText(projectViewItem.getProjectName().toString());
         createdTime.setText(projectViewItem.getCreatedTime().toString());
         //participatedID.setText(projectViewItem.getParticipatedID().toString());
 
 
+
+        Button delete = (Button)swipeLayout.findViewById(R.id.delete);
+        delete.setTag(R.string.tag, project_id);
+        delete.setOnClickListener(mOnclickListener);
+
+
+        Button modify = (Button)swipeLayout.findViewById(R.id.modify);
+        modify.setTag(R.string.tag, project_id);
+        modify.setOnClickListener(mOnclickListener);
 
         return view;
 
@@ -117,6 +123,10 @@ public class ProjectViewAdapter extends BaseAdapter {
         projectViewItem.setParticipatedID(participatedID);
 
         projectViewList.add(projectViewItem);
+    }
+
+    public void clear(){
+        projectViewList.clear();
     }
     public class NetworkTask4 extends AsyncTask<Void, Void, String> {
 

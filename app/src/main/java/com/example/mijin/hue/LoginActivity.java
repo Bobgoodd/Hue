@@ -11,9 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mijin.hue.LoginTab.LoginTabActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -24,7 +24,7 @@ import com.facebook.login.widget.LoginButton;
 public class LoginActivity extends Activity {
 
     CallbackManager callbackManager;
-    private Button register;
+    private TextView register;
     private Button login;
     private EditText idText;
     private EditText passwordText;
@@ -40,7 +40,7 @@ public class LoginActivity extends Activity {
 
         idText = (EditText)findViewById(R.id.idText);
         passwordText = (EditText)findViewById(R.id.passwordText);
-        register = (Button)findViewById(R.id.register);
+        register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -61,7 +61,7 @@ public class LoginActivity extends Activity {
                                              NetworkTask14 networkTask14 = new NetworkTask14(url, values);
                                              networkTask14.execute();
                                          } else {
-                                             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(),R.style.MyAlertDialog);
                                              builder.setMessage("로그인 정보를 입력해주세요.");
                                              builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                                  @Override
@@ -179,7 +179,7 @@ public class LoginActivity extends Activity {
                     }
                 });
 //
-                Button find = (Button) findViewById(R.id.find);
+                TextView find = (TextView) findViewById(R.id.find);
                 find.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -236,10 +236,10 @@ public class LoginActivity extends Activity {
                     editor.putString("pw", passwordText.getText().toString());
                     editor.commit();
 
-                    Intent intent = new Intent(LoginActivity.this, LoginTabActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("로그인 정보가 다릅니다.");
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override

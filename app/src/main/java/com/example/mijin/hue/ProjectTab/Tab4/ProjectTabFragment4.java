@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mijin.hue.Day.GroupDayScheduleFragment;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -25,6 +26,7 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import org.json.JSONArray;
@@ -46,17 +48,18 @@ import java.util.List;
  */
 
 public class ProjectTabFragment4 extends Fragment {
-
+    View tab2;
     MaterialCalendarView materialCalendarView;
     SharedPreferences prefs;
     String url;
     ContentValues values;
     NetworkTask17 networkTask17;
     SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
+    ArrayList<CalendarDay> calendarDays = new ArrayList<CalendarDay>();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View tab2 = inflater.inflate(R.layout.fragment_login_tab2, container, false);
+        tab2 = inflater.inflate(R.layout.fragment_login_tab2, container, false);
 
         prefs = getActivity().getSharedPreferences("PrefName", Context.MODE_PRIVATE);
         materialCalendarView = (MaterialCalendarView) tab2.findViewById(R.id.calendarView);
@@ -64,8 +67,8 @@ public class ProjectTabFragment4 extends Fragment {
 
         materialCalendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2017, 10, 1))
-                .setMaximumDate(CalendarDay.from(2017, 10, 30))
+                .setMinimumDate(CalendarDay.from(2017, 11, 1))
+                .setMaximumDate(CalendarDay.from(2017, 11, 31))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
 
@@ -73,39 +76,51 @@ public class ProjectTabFragment4 extends Fragment {
         materialCalendarView.addDecorator(new SaturdayDecorator());
         materialCalendarView.addDecorator(new OneDayDecorator());
 
-        url = "http://uoshue.dothome.co.kr/loadProjectSchedule.php?";
-        values = new ContentValues();
-        values.put("project_id", prefs.getString("project_id",null));
-
-        networkTask17 = new NetworkTask17(url, values);
-        networkTask17.execute();
+        load();
 
 
-/*
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
-                ArrayList<CalendarDay> calendarDays = new ArrayList<CalendarDay>();
-                calendarDays.add(date);
-                ApiSimulator apiSimulator = new ApiSimulator(widget,calendarDays);
-                apiSimulator.execute();
+                //ArrayList<CalendarDay> calendarDays = new ArrayList<CalendarDay>();
+                //calendarDays.add(date);
+                //ApiSimulator apiSimulator = new ApiSimulator(widget,calendarDays);
+                //apiSimulator.execute();
 
 
                 String new_date = dformat.format(date.getDate());
                 Log.d("날짜형식2",new_date);
 
+                Bundle b = new Bundle();
+                b.putString("date",new_date);
+                Fragment fragment = new GroupDayScheduleFragment();
+                fragment.setArguments(b);
 
+
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.frame, fragment).addToBackStack(null).commit();
+                /*
+                getSupportFragmentManager().beginTransaction().replace(R.id.)
+                ViewPager viewPager = (ViewPager) ((View)tab2.getParent()).findViewById(R.id.pager);
+                TabLayout tabLayout = (TabLayout) ((View)tab2.getParent()).findViewById(R.id.tabLayout);
+                ProjectTabPagerAdapter pagerAdapter = new ProjectTabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+                pagerAdapter.change(fragment);
+                viewPager.setAdapter(pagerAdapter);
+                viewPager.setCurrentItem(2);
+*/
+
+/*
                 url = "http://uoshue.dothome.co.kr/addSchedule.php?";
                 values = new ContentValues();
                 values.put("id",prefs.getString("id",null));
                 values.put("date",new_date);
                 networkTask17 = new NetworkTask17(url,values);
                 networkTask17.execute();
-
+*/
             }
         });
-*/
+
+
         return tab2;
 
 
@@ -179,6 +194,16 @@ public class ProjectTabFragment4 extends Fragment {
         }
     }
 
+    public void load(){
+        url = "http://uoshue.dothome.co.kr/loadProjectSchedule.php?";
+        values = new ContentValues();
+        values.put("project_id", prefs.getString("project_id",null));
+
+        networkTask17 = new NetworkTask17(url, values);
+        networkTask17.execute();
+    }
+
+
     /**
      * Simulate an API call to show how to add decorators
      */
@@ -201,6 +226,7 @@ public class ProjectTabFragment4 extends Fragment {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MONTH, -2);
             ArrayList<CalendarDay> dates = new ArrayList<>();
+            dates.clear();
             for(CalendarDay calendarDay : date) {
                 dates.add(calendarDay);
                 calendar.add(Calendar.DATE, 1);
@@ -253,6 +279,34 @@ public class ProjectTabFragment4 extends Fragment {
         }
     }
 
+    public void calculateDays(String start, String end){
+        try {
+            Date d1 = dformat.parse(start);
+            Date d2 = dformat.parse(end);
+
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+
+            //Calendar 타입으로 변경 add()메소드로 1일씩 추가해 주기위해 변경
+            c1.setTime(d1);
+            c2.setTime(d2);
+
+            //시작날짜와 끝 날짜를 비교해, 시작날짜가 작거나 같은 경우 출력
+            while( c1.compareTo(c2) !=1 ){
+
+                //가능날짜에서 제거
+                calendarDays.remove(CalendarDay.from(c1.getTime()));
+
+                //시작날짜 + 1 일
+                c1.add(Calendar.DATE, 1);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public class NetworkTask17 extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -281,7 +335,9 @@ public class ProjectTabFragment4 extends Fragment {
             if(result!=null){
 
                 try {
-                    ArrayList<CalendarDay> calendarDays = new ArrayList<CalendarDay>();
+                    //ArrayList<CalendarDay> calendarDays = new ArrayList<CalendarDay>();
+
+                    calendarDays.clear();
 
                     CalendarDay c = materialCalendarView.getMinimumDate();
                     Calendar cal = Calendar.getInstance();
@@ -295,14 +351,17 @@ public class ProjectTabFragment4 extends Fragment {
                     for(int i=0;i<jarr.length();i++) {
                         JSONObject json = (JSONObject) jarr.get(i);
 
-                        String before = json.getString("date");
-
+                        String start = json.getString("start");
+                        String end = json.getString("end");
+/*
                         try {
-                            calendarDays.remove(CalendarDay.from(dformat.parse(before)));
-                            Log.d("삭제",CalendarDay.from(dformat.parse(before)).toString());
+                            //calendarDays.remove(CalendarDay.from(dformat.parse(before)));
+                            //calendarDays.add(CalendarDay.from(dformat.parse(before)));
+
                         } catch (ParseException e) {
                             e.printStackTrace();
-                        }
+                        }*/
+                        calculateDays(start,end);
 
                     }
 
@@ -318,5 +377,6 @@ public class ProjectTabFragment4 extends Fragment {
 
         }
     }
+
 
 }

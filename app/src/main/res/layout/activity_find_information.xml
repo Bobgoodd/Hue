@@ -3,33 +3,44 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/colorLogo">
 
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:layout_marginVertical="20dp"
-        android:src="@drawable/logohue" />
+        android:layout_width="220dp"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:src="@drawable/hue" />
+
 
     <Button
         android:id="@+id/id"
-        android:layout_margin="20dp"
-        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ID찾기"
-        android:textColor="@color/colorWhite"
-        android:background="@color/colorLogo"/>
+        android:textColor="@color/colorLogo"
+        android:textAlignment="center"
+        android:background="@drawable/button_border"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/password"
-        android:layout_margin="20dp"
-        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="PASSWORD찾기"
-        android:textColor="@color/colorWhite"
-        android:background="@color/colorLogo"/>
+        android:textColor="@color/colorLogo"
+        android:textAlignment="center"
+        android:background="@drawable/button_border"
+        android:textStyle="bold"/>
 
 </LinearLayout>

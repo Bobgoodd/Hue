@@ -18,9 +18,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.mijin.hue.LoginTab.LoginTabActivity;
 import com.example.mijin.hue.LoginTab.Tab3.FriendViewAdapter;
 import com.example.mijin.hue.LoginTab.Tab3.FriendViewItem;
+import com.example.mijin.hue.MainActivity;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 
@@ -80,7 +80,7 @@ public class ModifyProjectActivity extends AppCompatActivity{
             public void onClick(View view) {
 
                 if(mem.size()==0) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(),R.style.MyAlertDialog);
                     builder.setMessage("멤버를 선택해주세요.");
                     builder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                         @Override
@@ -101,7 +101,7 @@ public class ModifyProjectActivity extends AppCompatActivity{
                     values.put("k",mem.size());
                     networkTask2 = new NetworkTask2(url, values);
                     networkTask2.execute();
-                    Intent intent = new Intent(getApplicationContext(), LoginTabActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("project_id",intent2.getStringExtra("project_id"));
                     intent.putParcelableArrayListExtra("mem", mem);
                     startActivityForResult(intent, 0);

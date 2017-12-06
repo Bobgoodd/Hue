@@ -1,5 +1,6 @@
 package com.example.mijin.hue.LoginTab.Tab2;
 
+import android.support.v4.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mijin.hue.Day.DayScheduleFragment;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -201,12 +203,14 @@ class DateTimePicker extends LinearLayout {
         materialCalendarView.addDecorator(new SaturdayDecorator());
         materialCalendarView.addDecorator(new OneDayDecorator());
 
+
         url = "http://uoshue.dothome.co.kr/loadSchedule.php?";
         values = new ContentValues();
         values.put("id", prefs.getString("id",null));
 
         networkTask16 = new NetworkTask16(url, values);
         networkTask16.execute();
+
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -221,14 +225,22 @@ class DateTimePicker extends LinearLayout {
                 String new_date = dformat.format(date.getDate());
                 Log.d("날짜형식2",new_date);
 
+                Bundle b = new Bundle();
+                b.putString("date",new_date);
+                Fragment fragment = new DayScheduleFragment();
+                fragment.setArguments(b);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                fragmentTransaction.replace(R.id.frame, fragment);
+                fragmentTransaction.commit();
 
+/*
                 url = "http://uoshue.dothome.co.kr/addSchedule.php?";
                 values = new ContentValues();
                 values.put("id",prefs.getString("id",null));
                 values.put("date",new_date);
                 networkTask16 = new NetworkTask16(url,values);
                 networkTask16.execute();
-
+*/
             }
         });
 

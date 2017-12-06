@@ -1,6 +1,7 @@
 package com.example.mijin.hue.LoginTab.Tab3;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +65,7 @@ public class LoginTabFragment3 extends Fragment{
             }
         });
 
-        Button search;
+        Button search ;
         com.melnykov.fab.FloatingActionButton fabb;
 
 
@@ -85,7 +86,7 @@ public class LoginTabFragment3 extends Fragment{
         NetworkTask2 networkTask2 = new NetworkTask2(url,values);
         networkTask2.execute();
 
-        /*
+
         if(getArguments()!=null) {
             FriendViewItem item = getArguments().getParcelable("new");
             if (item != null)
@@ -93,7 +94,7 @@ public class LoginTabFragment3 extends Fragment{
 
             adapter.notifyDataSetChanged();
         }
-        */
+
         search = (Button) tab3.findViewById(R.id.search);
 
         search.setOnClickListener(new View.OnClickListener(){
@@ -103,7 +104,7 @@ public class LoginTabFragment3 extends Fragment{
             }
         });
 
-/*
+
         fabb = (com.melnykov.fab.FloatingActionButton) tab3.findViewById(R.id.fabb);
         fabb.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -113,7 +114,7 @@ public class LoginTabFragment3 extends Fragment{
             }
         });
 
-*/
+
 
         return tab3;
     }

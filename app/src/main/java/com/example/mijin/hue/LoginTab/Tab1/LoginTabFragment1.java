@@ -18,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+
 import com.example.mijin.hue.ProjectTab.ProjectTabFragment;
 import com.example.mijin.hue.R;
 import com.example.mijin.hue.RequestHttpURLConnection;
+import com.melnykov.fab.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,25 +86,15 @@ public class LoginTabFragment1 extends Fragment {
 
         }
 */
-        url =  "http://uoshue.dothome.co.kr/loadProject.php?";
-        values = new ContentValues();
 
-        if(prefs!=null){
-            id = prefs.getString("id", null);
-            Log.d("로그인정보",id);
-        }
-
-        values.put("director_id",id);
-        networkTask3 = new NetworkTask3(url, values);
-        networkTask3.execute();
-        adapter.notifyDataSetChanged();
+        load();
 
         listView = (ListView) view.findViewById(R.id.projectList);
         listView.setAdapter(adapter);
-/*
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
-*/
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -114,7 +106,7 @@ public class LoginTabFragment1 extends Fragment {
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame, new ProjectTabFragment());
+                fragmentTransaction.add(R.id.frame, new ProjectTabFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
 
                 /*
@@ -124,18 +116,18 @@ public class LoginTabFragment1 extends Fragment {
                 */
             }
         });
-/*
 
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                //Intent intent = new Intent(getContext(), AddProjectAllActivity.class);
                 Intent intent = new Intent(getContext(), AddProjectActivity.class);
                 startActivity(intent);
 
             }
         });
 
-        */
+
 
         return view;
     }
@@ -172,7 +164,7 @@ public class LoginTabFragment1 extends Fragment {
 
             try {
                 if(result!=null&&!result.equals("")) {
-
+                    adapter.clear();
                     JSONArray jarr = new JSONArray(result);
                     String memlist = "";
                     for (int i = 0; i < jarr.length(); i++) {
@@ -226,7 +218,7 @@ public class LoginTabFragment1 extends Fragment {
 
                 case R.id.delete:
                     project_id=String.valueOf(v.getTag(R.string.tag));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialog);
                     builder.setMessage("삭제 하시겠습니까?");
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
@@ -237,7 +229,8 @@ public class LoginTabFragment1 extends Fragment {
                             values.put("project_id", project_id);
                             networkTask3 = new NetworkTask3(url, values);
                             networkTask3.execute();
-                            adapter.notifyDataSetChanged();
+
+                            load();
 
                         }
                     });
@@ -248,7 +241,6 @@ public class LoginTabFragment1 extends Fragment {
                         }
                     });
                     builder.show();
-
 
 
 
@@ -265,10 +257,12 @@ public class LoginTabFragment1 extends Fragment {
 
                     adapter.notifyDataSetChanged();
 */
-                    project_id=String.valueOf(v.getTag(R.string.tag1));
+                    project_id=String.valueOf(v.getTag(R.string.tag));
                     Intent intent2 = new Intent(getActivity(), ModifyProjectActivity.class);
                     intent2.putExtra("project_id",project_id);
                     startActivity(intent2);
+
+
 
                     break;
 
@@ -279,6 +273,26 @@ public class LoginTabFragment1 extends Fragment {
 
             }
 
+
+
         }
     };
+
+
+    public void load(){
+
+        url =  "http://uoshue.dothome.co.kr/loadProject.php?";
+        values = new ContentValues();
+
+        if(prefs!=null){
+            id = prefs.getString("id", null);
+            Log.d("로그인정보",id);
+        }
+
+        values.put("director_id",id);
+        networkTask3 = new NetworkTask3(url, values);
+        networkTask3.execute();
+        adapter.notifyDataSetChanged();
+
+    }
 }

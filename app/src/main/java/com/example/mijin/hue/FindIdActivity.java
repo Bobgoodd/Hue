@@ -42,7 +42,7 @@ public class FindIdActivity extends Activity {
                     NetworkTask8 networkTask8 = new NetworkTask8(url, values);
                     networkTask8.execute();
                 }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FindIdActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FindIdActivity.this,R.style.MyAlertDialog);
                     builder.setMessage("이메일을 입력해주세요.");
                     builder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                         @Override
@@ -100,7 +100,7 @@ public class FindIdActivity extends Activity {
 
 
             }else{
-                AlertDialog.Builder builder = new AlertDialog.Builder(FindIdActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(FindIdActivity.this,R.style.MyAlertDialog);
                 builder.setMessage("다시 입력해주세요.");
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override

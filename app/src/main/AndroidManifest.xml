@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+
+<!--
 <activity android:name=".MainActivity">
     <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -29,7 +32,20 @@
         <activity android:name=".FindInformationActivity"/>
         <activity android:name=".ProjectTab.MeetingActivity"></activity>
         <activity android:name=".LoginTab.Tab3.NewFriendActivity"/>
-        <!--
+        <activity android:name=".Day.SettingScheduleActivity2"
+            android:theme="@style/Theme.MyDialog">
+        </activity>
+        <activity android:name=".Day.GroupSettingScheduleActivity2"
+            android:theme="@style/Theme.MyDialog"/>
+        <activity android:name=".LoginTab.Tab1.AddProjectActivity"/>
+        <activity
+            android:name=".LoginTab.Tab1.ModifyProjectActivity"
+            android:theme="@style/Theme.MyDialog"></activity>
+        <activity
+            android:name=".ProjectTab.Tab3.EditTodoActivity"
+            android:theme="@style/Theme.MyDialog"></activity>
+-->
+
         <activity android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -37,6 +53,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".LoginTab.LoginTabActivity" />
         <activity android:name=".ProjectTab.ProjectTabActivity" />
@@ -85,8 +102,16 @@
         <activity
             android:name=".LoginTab.Tab1.ModifyProjectActivity"
             android:theme="@style/Theme.MyDialog"></activity>
+        <activity android:name=".ProjectTab.MeetingActivity"></activity>
+        <activity android:name=".Day.SettingScheduleActivity2"
+            android:theme="@style/Theme.MyDialog">
+        </activity>
+        <activity android:name=".Day.GroupSettingScheduleActivity2"
+            android:theme="@style/Theme.MyDialog"/>
+        <activity
+            android:name=".ProjectTab.Tab3.EditTodoActivity"
+            android:theme="@style/Theme.MyDialog"></activity>
 
--->
     </application>
 
 </manifest>
