@@ -378,25 +378,36 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
         alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b==true){
+                if(b==true) {
 
+                    if (sTime != null) {
+                        intent = new Intent(GroupSettingScheduleActivity2.this, BroadcastD.class);
+                        intent.putExtra("isGroupSetting", true);
+                        intent.putExtra("content", id + "님의 Project#" + project_id + " 일정");
 
-                    intent = new Intent(GroupSettingScheduleActivity2.this, BroadcastD.class);
-                    intent.putExtra("isGroupSetting",true);
-                    intent.putExtra("content",id+"님의 Project#"+project_id+" 일정");
+                        sender = PendingIntent.getBroadcast(GroupSettingScheduleActivity2.this, 0, intent, FLAG_UPDATE_CURRENT);
 
-                    sender = PendingIntent.getBroadcast(GroupSettingScheduleActivity2.this, 0, intent,  FLAG_UPDATE_CURRENT);
+                        Calendar calendar = Calendar.getInstance();
+                        //알람시간 calendar에 set해주기
 
-                    Calendar calendar = Calendar.getInstance();
-                    //알람시간 calendar에 set해주기
+                        calendar.set(y, m, d, t, 0, 0);
 
-                    calendar.set(y, m, d, t, 0, 0);
+                        //알람 예약
+                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
 
-                    //알람 예약
-                    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-
+                    } else {
+                        am.cancel(sender);
+                    }
                 }else{
-                    am.cancel(sender);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
+                    builder.setMessage("시작일정을 먼저 입력해주세요.");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.show();
                 }
             }
         });

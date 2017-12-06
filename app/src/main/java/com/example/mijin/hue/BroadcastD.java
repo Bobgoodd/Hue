@@ -29,7 +29,7 @@ public class BroadcastD extends BroadcastReceiver {
 
         Log.d("받은거는", intent.getStringExtra("content"));
         Notification.Builder builder = new Notification.Builder(context);
-        builder.setSmallIcon(R.drawable.h).setTicker("HETT").setWhen(System.currentTimeMillis())
+        builder.setSmallIcon(R.drawable.hue).setTicker("HETT").setWhen(System.currentTimeMillis())
                 .setNumber(1).setContentTitle("HUE 일정 알람").setContentText(intent.getStringExtra("content"))
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(pendingIntent).setAutoCancel(true);
 

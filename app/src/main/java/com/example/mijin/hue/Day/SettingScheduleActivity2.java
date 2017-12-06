@@ -362,33 +362,44 @@ public class SettingScheduleActivity2 extends AppCompatActivity {
         alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b==true){
+                if (b == true) {
 
-                    AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
-                    intent.putExtra("isSetting",true);
-                    intent.putExtra("content",id+"님의 개인일정");
+                    if (sTime != null) {
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
+                        intent.putExtra("isSetting", true);
+                        intent.putExtra("content", id + "님의 개인일정");
 
-                    PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent,  0);
+                        PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent, 0);
 
-                    Calendar calendar = Calendar.getInstance();
-                    //알람시간 calendar에 set해주기
+                        Calendar calendar = Calendar.getInstance();
+                        //알람시간 calendar에 set해주기
 
-                    //calendar.set(y, m, d, t, 0, 0);
-                    calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 4, 25, 0);
+                        //calendar.set(y, m, d, t, 0, 0);
+                        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 4, 25, 0);
 
 
+                        //알람 예약
+                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
 
-                    //알람 예약
-                    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+                    } else {
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
+                        intent.putExtra("isSetting", true);
 
+                        PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent, 0);
+                        am.cancel(sender);
+                    }
                 }else{
-                    AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
-                    intent.putExtra("isSetting",true);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingScheduleActivity2.this, R.style.MyAlertDialog);
+                    builder.setMessage("시작일정을 먼저 입력해주세요.");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                    PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent,  0);
-                    am.cancel(sender);
+                        }
+                    });
+                    builder.show();
                 }
             }
         });
