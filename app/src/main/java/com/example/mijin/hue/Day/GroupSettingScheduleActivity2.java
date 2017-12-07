@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -56,6 +55,7 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
     PendingIntent sender;
 
     AlarmManager am;
+    CheckBox alarm;
 
     @Override
 
@@ -193,6 +193,7 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
         Button save = (Button) findViewById(R.id.save);
         Button cancel = (Button) findViewById(R.id.cancel);
 
+        alarm = (CheckBox) findViewById(R.id.alarm);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,14 +209,33 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
                 m = startMonth.getValue();
                 y = startYear.getValue();
                 //t = startTime.getNewCurrentTime().getHourOfDay();
-                t=startHour.getValue();
+                t = startHour.getValue();
                 sTime = y+"-"+m+"-"+d+" "+t+":00:00";
+
+                if(alarm.isChecked()){
+                    intent = new Intent(GroupSettingScheduleActivity2.this, BroadcastD.class);
+                    intent.putExtra("isGroupSetting", true);
+                    intent.putExtra("content", id + "님의 Project#" + project_id + " 일정");
+
+                    sender = PendingIntent.getBroadcast(GroupSettingScheduleActivity2.this, 0, intent, FLAG_UPDATE_CURRENT);
+
+                    Calendar calendar = Calendar.getInstance();
+                    //알람시간 calendar에 set해주기
+
+                    calendar.set(y, m, d, t, 0, 0);
+
+                    //알람 예약
+                    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+
+                } else {
+                    am.cancel(sender);
+                }
 
 
                 d2 = endDay.getValue();
                 m2 = endMonth.getValue();
                 y2 = endYear.getValue();
-                t2=endHour.getValue();
+                t2= endHour.getValue();
                 //t2 = endTime.getNewCurrentTime().getHourOfDay();
 
 
@@ -374,43 +394,8 @@ public class GroupSettingScheduleActivity2 extends AppCompatActivity {
             }
         });
 
-        CheckBox alarm = (CheckBox) findViewById(R.id.alarm);
-        alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b==true) {
 
-                    if (sTime != null) {
-                        intent = new Intent(GroupSettingScheduleActivity2.this, BroadcastD.class);
-                        intent.putExtra("isGroupSetting", true);
-                        intent.putExtra("content", id + "님의 Project#" + project_id + " 일정");
 
-                        sender = PendingIntent.getBroadcast(GroupSettingScheduleActivity2.this, 0, intent, FLAG_UPDATE_CURRENT);
-
-                        Calendar calendar = Calendar.getInstance();
-                        //알람시간 calendar에 set해주기
-
-                        calendar.set(y, m, d, t, 0, 0);
-
-                        //알람 예약
-                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-
-                    } else {
-                        am.cancel(sender);
-                    }
-                }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingScheduleActivity2.this, R.style.MyAlertDialog);
-                    builder.setMessage("시작일정을 먼저 입력해주세요.");
-                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-                    builder.show();
-                }
-            }
-        });
 
     }
 

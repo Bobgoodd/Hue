@@ -84,7 +84,7 @@ android:id="@+id/swipeLayout">
                 android:layout_marginRight="20dp"
                 android:max="100"
                 android:progressTint="@color/colorLogo"
-                android:progressBackgroundTint="@color/colorGray"/>
+                android:progressBackgroundTint="@color/colorGrayTransparent"/>
 
         <TextView
             android:id="@+id/progressBarStatus"

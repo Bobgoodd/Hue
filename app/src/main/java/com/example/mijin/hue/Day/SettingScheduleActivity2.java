@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -54,9 +53,7 @@ public class SettingScheduleActivity2 extends AppCompatActivity {
 
     Intent in;
 
-
-
-
+    CheckBox alarm;
 
     @Override
 
@@ -183,6 +180,8 @@ public class SettingScheduleActivity2 extends AppCompatActivity {
         Button save = (Button) findViewById(R.id.save);
         Button cancel = (Button) findViewById(R.id.cancel);
 
+
+       alarm = (CheckBox) findViewById(R.id.alarm);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -204,6 +203,7 @@ public class SettingScheduleActivity2 extends AppCompatActivity {
                     t = startHour.getValue();
                     sTime = y + "-" + m + "-" + d + " " + t + ":00:00";
 
+
                     d2 = endDay.getValue();
                     m2 = endMonth.getValue();
                     y2 = endYear.getValue();
@@ -218,6 +218,34 @@ public class SettingScheduleActivity2 extends AppCompatActivity {
                     values.put("id", id);
                     values.put("start", sTime);
                     values.put("item", item);
+
+
+                    if(alarm.isChecked()){
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
+                        intent.putExtra("isSetting", true);
+                        intent.putExtra("content", id + "님의 개인일정("+item+")");
+
+                        PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent, 0);
+
+                        Calendar calendar = Calendar.getInstance();
+                        //알람시간 calendar에 set해주기
+
+                        //calendar.set(y, m, d, t, 0, 0);
+                        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 4, 25, 0);
+
+
+                        //알람 예약
+                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+
+                    } else {
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
+                        intent.putExtra("isSetting", true);
+
+                        PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent, 0);
+                        am.cancel(sender);
+                    }
 
                     if (y2 < y) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(SettingScheduleActivity2.this, R.style.MyAlertDialog);
@@ -358,51 +386,6 @@ public class SettingScheduleActivity2 extends AppCompatActivity {
             }
         });
 
-        CheckBox alarm = (CheckBox) findViewById(R.id.alarm);
-        alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b == true) {
-
-                    if (sTime != null) {
-                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
-                        intent.putExtra("isSetting", true);
-                        intent.putExtra("content", id + "님의 개인일정");
-
-                        PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent, 0);
-
-                        Calendar calendar = Calendar.getInstance();
-                        //알람시간 calendar에 set해주기
-
-                        //calendar.set(y, m, d, t, 0, 0);
-                        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 4, 25, 0);
-
-
-                        //알람 예약
-                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-
-                    } else {
-                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        Intent intent = new Intent(SettingScheduleActivity2.this, BroadcastD.class);
-                        intent.putExtra("isSetting", true);
-
-                        PendingIntent sender = PendingIntent.getBroadcast(SettingScheduleActivity2.this, 0, intent, 0);
-                        am.cancel(sender);
-                    }
-                }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingScheduleActivity2.this, R.style.MyAlertDialog);
-                    builder.setMessage("시작일정을 먼저 입력해주세요.");
-                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-                    builder.show();
-                }
-            }
-        });
 
     }
 
